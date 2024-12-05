@@ -1,0 +1,40 @@
+<!-- fragments/navbar.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ofcourse</title>
+  <!-- fontawesome css cdn-->
+  <link rel="stylesheet" th:href="@{/css/fontawesome.css}">
+  <!--    &lt;!&ndash; normalize css cdn&ndash;&gt;-->
+  <link rel="stylesheet" th:href="@{/css/normalize.css}">
+  <!--    &lt;!&ndash; global css &ndash;&gt;-->
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="main-page">
+<header>
+  <div th:replace="fragments/navbar :: navbar"></div>
+</header>
+
+
+<div class="container">
+  <h1>Of Course</h1>
+  <h2>가고싶은 회사를 가려면 무엇을 공부해야 할까요?</h2>
+  <div class="link-area">
+    <a th:href="@{/course}">스택별 강의 보러가기</a>
+    <a th:href="@{/company}">회사별 기술스택 보러가기</a>
+    <a th:href="@{/stack}">기술스택별 리스트 보러가기</a>
+  </div>
+</div>
+
+<footer>
+  <p>
+    Copyright © 2024. Yechanny All Rights Reserved.
+  </p>
+</footer>
+</body>
+
+</html>

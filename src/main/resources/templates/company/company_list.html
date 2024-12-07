@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ofcourse</title>
+    <!-- fontawesome css cdn-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+          integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- normalize css cdn-->
+    <link rel="stylesheet" th:href="@{/css/normalize.css}">
+    <!-- global css -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="list-page">
+<header>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+</header>
+<div class="title-area">
+    <h2 class="page-title">기업별 기술 스택</h2>
+    <h3>기업들이 무슨 기술 스택을 사용하는지 확인해봐~ 🤣</h3>
+</div>
+<div class="search-area">
+    <form th:action="@{/company/search}" method="GET">
+        <div class="search-bar">
+            <input type="text" name="search" id="search-bar" placeholder="회사명을 입력해주세요!">
+            <button type="submit" class="search-btn">검색</button>
+        </div>
+    </form>
+</div>
+
+
+<!-- 검색을 했을 때 -->
+<div class="content">
+    <div class="filter-area">
+        <div class="btn-wrap">
+            <div class="btn-r-wrap">
+                <p class="title">필터 </p>
+                <a class="btn" th:href="@{/company}">All</a>
+                <a class="btn" th:href="@{/companay(filter='foreign')}">외국기업</a>
+                <a class="btn" th:href="@{/companay(filter='comprehensive')}">종합</a>
+                <a class="btn" th:href="@{/companay(filter='social')}">소셜/컨텐츠</a>
+                <a class="btn" th:href="@{/companay(filter='ecommerce')}">이커머스</a>
+                <a class="btn" th:href="@{/companay(filter='trip')}">여행</a>
+                <a class="btn" th:href="@{/companay(filter='finance')}">금융/보험</a>
+                <a class="btn" th:href="@{/companay(filter='education')}">교육</a>
+                <a class="btn" th:href="@{/companay(filter='mobility')}">모빌리티</a>
+                <a class="btn" th:href="@{/companay(filter='foodtech')}">푸드테크</a>
+                <a class="btn" th:href="@{/companay(filter='realestate')}">부동산/인테리어</a>
+                <a class="btn" th:href="@{/companay(filter='healthcare')}">헬스케어</a>
+                <a class="btn" th:href="@{/companay(filter='ai')}">인공지능</a>
+                <a class="btn" th:href="@{/companay(filter='recruitment')}">채용</a>
+                <a class="btn" th:href="@{/companay(filter='etc')}">기타</a>
+            </div>
+        </div>
+    </div>
+    <main class="list-area skill">
+        <ul>
+            <li class="list-card" th:each="company : ${companyList}">
+                <div class="company-icon">
+                    <a th:href="@{/company/{id}(id=${company.id})}">
+                        <img th:src="${ company.logo }" alt="기업 로고">
+                    </a>
+                </div>
+                <div class="info-box">
+                    <a th:href="@{/company/{id}(id=${company.id})}" style="text-decoration: none;">
+                        <h3>
+                            <span th:text="${company.name}">회사 이름</span>
+                            <span class="sort" th:if="${company.category}" th:text="${company.category}"></span>
+                        </h3>
+
+                    </a>
+                </div>
+                <p class="skill-info" th:text="${company.stackInfo}">기술 스택 정보</p>
+                <div class="skill-list">
+                    <ul>
+                        <li th:each="stack : ${company.stackList}">
+                            <a class="skill-icon" th:href="@{/stack/{id}(id=${stack.id})}">
+                                <img th:src="${stack.logo}" alt="스택 아이콘"></a>
+                        </li>
+                        <li>
+                            <a class="see-more" th:href="@{/company/{id}(id=${company.id})}">자세히보기</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </main>
+</div>
+<div class="pagination">
+    <div class="pagination">
+        <!-- 이전 버튼 -->
+        <a class="btn" th:href="@{/company(page=${currentPage - 1})}" th:if="${currentPage > 1}">
+            <i class="fa-solid fa-angle-left"></i>
+        </a>
+        <a class="btn disabled" th:if="${currentPage <= 1}" tabindex="-1">
+            <i class="fa-solid fa-angle-left"></i>
+        </a>
+
+        <!-- 페이지 번호 출력 -->
+        <li th:each="page : ${pageRange}">
+            <a class="btn"
+               th:href="@{/company(page=${page})}"
+               th:classappend="${page == currentPage} ? 'on' : ''"
+               th:text="${page}"></a>
+        </li>
+
+        <!-- 다음 버튼 -->
+        <a class="btn" th:href="@{/company(page=${currentPage + 1})}" th:if="${currentPage < totalPages}">
+            <i class="fa-solid fa-angle-right"></i>
+        </a>
+        <a class="btn disabled" th:if="${currentPage >= totalPages}">
+            <i class="fa-solid fa-angle-right"></i>
+        </a>
+    </div>
+</div>
+<footer>
+    <p>
+        Copyright © 2024. Yechanny All Rights Reserved.
+    </p>
+</footer>
+<script th:src="@{/js/index.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.ofcourse.mapper.CompanyMapper">
+
+    <select id="countCompanies" resultType="int">
+        SELECT COUNT(*) FROM Company
+    </select>
+
+    <!--
+        resultType : SQL쿼리 결과를 Java객체로 변환할 떄 사용할 클래스, 결과과 CompanyDTO, StackDTO라는 클래스의 형태로 반환됨.
+    -->
+    <select id ="getAllCompanies" resultType="com.project.ofcourse.dto.CompanyDTO">
+        SELECT
+            id,
+            logo,
+            name,
+            category,
+            stack_info as stackInfo
+        FROM
+            Company
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <!--
+        INNER JOIN: 두 테이블 간 공통된 데이터를 결합.
+        ON Stack.id = Compnany_Stack.stack_id : Stack 테이블의 id열과 Company_Stack 테이블의 stack_id열이 같은 경우만
+        데이터를 결합
+        <foreach>: MyBatis에서 반복문을 실행할 때 사용하는 태그.
+        collection="companyId": 입력값으로 제공된 companyId 컬렉션을 반복
+
+    -->
+    <select id="selectStacksByCompanyId" resultType="com.project.ofcourse.dto.StackDTO">
+        SELECT
+        Stack.id, Stack.name, Stack.logo, Company_Stack.company_id
+        FROM
+            Stack
+        INNER JOIN Company_Stack ON Stack.id = Company_Stack.stack_id
+        WHERE
+            Company_Stack.company_id IN
+        <foreach item="id" collection="companyId" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+</mapper>
+
+

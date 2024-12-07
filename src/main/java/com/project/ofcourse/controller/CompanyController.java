@@ -21,7 +21,7 @@ public class CompanyController {
 
     @GetMapping
     public String CompanyList(@RequestParam(defaultValue = "1") int page, Model model) {
-        int pageSize = 15; // 한 페이지당 데이터 개수
+        int pageSize = 12; // 한 페이지당 데이터 개수
         //전체 데이터 개수 계산
         int totalCompanies = companyService.getTotalCompanies();
         int totalPages = (int) Math.ceil((double) totalCompanies / pageSize);

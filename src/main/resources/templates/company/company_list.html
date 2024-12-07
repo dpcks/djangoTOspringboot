@@ -94,10 +94,10 @@
 <div class="pagination">
     <div class="pagination">
         <!-- 이전 버튼 -->
-        <a class="btn" th:href="@{/company(page=${currentPage - 1})}" th:if="${currentPage > 1}">
+        <a th:href="@{/company(page=${previousGroupStart})}" th:if="${hasPreviousGroup}" class="btn prev">
             <i class="fa-solid fa-angle-left"></i>
         </a>
-        <a class="btn disabled" th:if="${currentPage <= 1}" tabindex="-1">
+        <a class="btn prev disabled" th:if="${!hasPreviousGroup}">
             <i class="fa-solid fa-angle-left"></i>
         </a>
 
@@ -110,12 +110,13 @@
         </li>
 
         <!-- 다음 버튼 -->
-        <a class="btn" th:href="@{/company(page=${currentPage + 1})}" th:if="${currentPage < totalPages}">
+        <a th:href="@{/company(page=${nextGroupStart})}" th:if="${hasNextGroup}" class="btn next">
             <i class="fa-solid fa-angle-right"></i>
         </a>
-        <a class="btn disabled" th:if="${currentPage >= totalPages}">
+        <a class="btn next disabled" th:if="${!hasNextGroup}">
             <i class="fa-solid fa-angle-right"></i>
         </a>
+
     </div>
 </div>
 <footer>

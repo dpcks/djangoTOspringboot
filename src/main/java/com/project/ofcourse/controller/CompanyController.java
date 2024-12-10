@@ -1,6 +1,7 @@
 package com.project.ofcourse.controller;
 
 import com.project.ofcourse.dto.CompanyDTO;
+import com.project.ofcourse.dto.CompanyInfoDTO;
 import com.project.ofcourse.dto.PageRequestDTO;
 import com.project.ofcourse.dto.PageResponseDTO;
 import com.project.ofcourse.service.CompanyService;
@@ -9,14 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
 
 @Controller
 @RequestMapping("/company")
@@ -24,6 +23,7 @@ import java.util.stream.IntStream;
 public class CompanyController {
     private final CompanyService companyService;
 
+    // 회사 리스트
     @GetMapping
     public String getCompanyList(PageRequestDTO pageRequest, Model model) {
         int totalCompanies = pageRequest.getCategory().equals("All")
@@ -37,7 +37,6 @@ public class CompanyController {
         PageResponseDTO<CompanyDTO> pageResponse = PaginationUtil.buildPageResponse(
                 companyList, totalCompanies, pageRequest, 10);
 
-//        model.addAttribute("companyList", companyList);
         model.addAttribute("pageResponse", pageResponse);
         model.addAttribute("selectedCategory", pageRequest.getCategory()); // 카테고리 정보 추가
 
@@ -74,4 +73,15 @@ public class CompanyController {
         return "company/company_list";
     }
 
+    // 회사 세부 정보 디테일
+    @GetMapping("/{id}")
+    public String detailCompany(@PathVariable Long id, Model model) {
+        //회사 정보 가져오기
+        CompanyInfoDTO companyInfo = companyService.getCompanyInfoById(id);
+
+        //모델에 데이터 추가
+        model.addAttribute("companyInfo", companyInfo);
+
+        return "company/company_detail";
+    }
 }

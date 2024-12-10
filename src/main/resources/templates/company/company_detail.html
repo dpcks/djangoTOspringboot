@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ofcourse</title>
+    <!-- fontawesome css cdn-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+          integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- normalize css cdn-->
+    <link rel="stylesheet" th:href="@{/css/normalize.css}">
+    <!-- global css -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="list-page">
+<header>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+</header>
+<div class="view content col-2">
+    <!-- 회사 정보 섹션 -->
+    <aside>
+        <div class="skill-info-area">
+            <div class="skill-icon">
+                <!-- 회사 이름, 로고 -->
+                <img th:src="${companyInfo.logo}" alt="Company Logo">
+            </div>
+            <h3 th:text="${companyInfo.name}"></h3>
+            <br>
+            <p class="skill-category" th:text="${companyInfo.stackInfo}"></p>
+            <br>
+            <p class="skill-category" th:if="${companyInfo.category}" th:text="${companyInfo.category}"></p>
+            <ul class="skill-info">
+                <li th:if="${companyInfo.companyLink != null}">
+                    <a th:href="${companyInfo.companyLink}" target="_blank">웹 사이트</a>
+                </li>
+                <li th:if="${companyInfo.companyLink == null}">
+                    <a href="#">웹 사이트</a>
+                </li>
+
+                <li th:if="${companyInfo.companyRecruitLink != null}">
+                    <a th:href="${companyInfo.companyRecruitLink}" target="_blank">채용 페이지</a>
+                </li>
+                <li th:if="${companyInfo.companyRecruitLink == null}">
+                    <a href="#">채용 페이지</a>
+                </li>
+
+            </ul>
+        </div>
+    </aside>
+    <!-- 스택 카테고리별 리스트 -->
+    <main class="view-area">
+        <div th:each="assort : ${companyInfo.assortList}" class="info-box">
+            <h3 class="skill-title" th:text="${assort.name}"></h3>
+            <ul class="skill-list">
+                <li th:each="stack : ${assort.stackList}">
+                    <a th:href="@{'/stack/' + ${stack.id}}">
+                        <i class="skill-icon"><img th:src="${stack.logo}" alt="Stack Logo"></i>
+                        <p class="skill-name" th:text="${stack.name}"></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </main>
+</div>
+<footer>
+    <p>
+        Copyright © 2024. Yechanny All Rights Reserved.
+    </p>
+</footer>
+</body>
+
+</html>

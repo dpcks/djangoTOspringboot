@@ -1,6 +1,8 @@
 package com.project.ofcourse.service;
 
+import com.project.ofcourse.dto.AssortDTO;
 import com.project.ofcourse.dto.CompanyDTO;
+import com.project.ofcourse.dto.CompanyInfoDTO;
 import com.project.ofcourse.dto.StackDTO;
 import com.project.ofcourse.mapper.CompanyMapper;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 @Service
@@ -114,6 +117,32 @@ public class CompanyService {
     // 검색어 자동완성
     public List<String> autoKeywordCompany(String keyword) {
         return companyMapper.autoKeywordCompany(keyword);
+    }
+
+    // 회사 세부정보
+    public CompanyInfoDTO getCompanyInfoById(Long id) {
+        //회사 기본 정보 가져오기
+        CompanyInfoDTO companyInfo = companyMapper.getCompanyInfoById(id);
+
+        //해당 회사와 연결된 스택 가져오기
+        List<StackDTO> stacks = companyMapper.getStacksByCompanyId(id);
+
+        //스택을 AssortDTO로 그룹화
+        Map<String, List<StackDTO>> assortMap = stacks.stream()
+                .collect(Collectors.groupingBy(StackDTO::getAssort));
+
+        List<AssortDTO> assortList = assortMap.entrySet().stream()
+                .map(entry -> {
+                    AssortDTO assort = new AssortDTO();
+                    assort.setName(entry.getKey());
+                    assort.setStackList(entry.getValue());
+                    return assort;
+                }).collect(Collectors.toList());
+
+        companyInfo.setAssortList(assortList);
+
+        return companyInfo;
+
     }
 
 }

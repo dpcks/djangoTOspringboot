@@ -111,5 +111,10 @@ public class CompanyService {
         return companyMapper.countSearchCompany(search);
     }
 
+    // 검색어 자동완성
+    public List<String> autoKeywordCompany(String keyword) {
+        return companyMapper.autoKeywordCompany(keyword);
+    }
+
 }
 

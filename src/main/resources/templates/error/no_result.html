@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>검색 결과 없음</title>
+    <!-- fontawesome css cdn-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+          integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- normalize css cdn-->
+    <link rel="stylesheet" th:href="@{/css/normalize.css}">
+    <!-- global css -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1 {
+            color: #ff7474;
+        }
+        a {
+            color: #ff7474;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<h1>😔 검색 결과가 없습니다</h1>
+<h3 class="search-result-area">검색하신 <span class="text-highlight" th:text="${search}"></span>에 대한 정보입니다.</h3>
+<p>입력하신 검색어에 해당하는 데이터가 없습니다.</p>
+<a href="/company">🏠홈으로 돌아가기</a>
+</body>
+</html>

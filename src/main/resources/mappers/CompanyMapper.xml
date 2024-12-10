@@ -38,11 +38,15 @@
         FROM
             Stack
         INNER JOIN Company_Stack ON Stack.id = Company_Stack.stack_id
-        WHERE
-            Company_Stack.company_id IN
-        <foreach item="id" collection="companyId" open="(" separator="," close=")">
-            #{id}
-        </foreach>
+        <if test="companyId != null and companyId.size() > 0">
+            WHERE Company_Stack.company_id IN
+            <foreach item="id" collection="companyId" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="companyId == null or companyId.size() == 0">
+            WHERE 1 = 0
+        </if>
     </select>
 
     <!-- 카테고리 필터 쿼리 -->
@@ -85,6 +89,14 @@
         SELECT COUNT(*)
         FROM Company
         WHERE name LIKE CONCAT('%', #{search}, '%')
+    </select>
+
+    <!-- 검색어 자동완성 -->
+    <select id="autoKeywordCompany" resultType="String">
+        SELECT name
+        FROM Company
+        WHERE name LIKE CONCAT('%', #{keyword}, '%')
+        LIMIT 10
     </select>
 
 

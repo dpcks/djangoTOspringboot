@@ -97,7 +97,13 @@ public class CompanyController {
         int pageSize = 12;
 
         //검색 결과 가져오기
-        List<CompanyDTO> companyList =companyService.searchCompany(search, page, pageSize );
+        List<CompanyDTO> companyList = companyService.searchCompany(search, page, pageSize);
+        if (companyList.isEmpty()) {
+            model.addAttribute("errorMessage", "검색 결과가 없습니다.");
+            model.addAttribute("search", search);
+            return "error/no_result"; // 검색 결과 없음 시 오류 페이지
+        }
+
         int totalCompanies = companyService.TotalSearchCompany(search);
         int totalPages = (int) Math.ceil((double) totalCompanies / pageSize);
 

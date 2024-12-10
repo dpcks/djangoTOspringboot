@@ -14,6 +14,7 @@ public interface CompanyMapper {
     /**
      * 모든 회사 정보를 가져옵니다.
      * 각 회사는 관련된 기술 스택과 함께 반환됩니다.
+     *
      * @return List<CompanyDTO>
      */
 
@@ -34,4 +35,6 @@ public interface CompanyMapper {
                                    @Param("pageSize") int pageSize);
 
     int countSearchCompany(@Param("search") String search);
+
+    List<String> autoKeywordCompany(@Param("keyword") String keyword);
 }

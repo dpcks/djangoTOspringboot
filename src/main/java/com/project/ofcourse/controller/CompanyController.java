@@ -88,5 +88,38 @@ public class CompanyController {
         return "company/company_list";
     }
 
+    // 회사 검색
+    @GetMapping("/search")
+    public String searchCompany(
+            @RequestParam String search,
+            @RequestParam(defaultValue = "1") int page,
+            Model model){
+        int pageSize = 12;
+
+        //검색 결과 가져오기
+        List<CompanyDTO> companyList =companyService.searchCompany(search, page, pageSize );
+        int totalCompanies = companyService.TotalSearchCompany(search);
+        int totalPages = (int) Math.ceil((double) totalCompanies / pageSize);
+
+        //페이지네이션 처리
+        int groupSize = 10;
+        int currentGroup = (int) Math.ceil((double) page / groupSize);
+        int startPage = (currentGroup - 1) * groupSize + 1;
+        int endPage = Math.min(currentGroup * groupSize, totalPages);
+        List<Integer> pageRange = IntStream.rangeClosed(startPage, endPage).boxed().collect(Collectors.toList());
+
+        //모델에 데이터 추가
+        model.addAttribute("companyList", companyList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("pageRange", pageRange);
+        model.addAttribute("hasPreviousGroup", startPage > 1);
+        model.addAttribute("hasNextGroup", endPage < totalPages);
+        model.addAttribute("previousGroupStart", Math.max(1, startPage - groupSize));
+        model.addAttribute("nextGroupStart", endPage + 1);
+        model.addAttribute("search", search);
+
+        return "company/company_list";
+    }
 
 }

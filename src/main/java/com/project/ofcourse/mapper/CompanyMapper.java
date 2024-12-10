@@ -29,4 +29,9 @@ public interface CompanyMapper {
 
     int countCompaniesByCategory(@Param("category") String category);
 
+    List<CompanyDTO> searchCompany(@Param("search") String search,
+                                   @Param("offset") int offset,
+                                   @Param("pageSize") int pageSize);
+
+    int countSearchCompany(@Param("search") String search);
 }

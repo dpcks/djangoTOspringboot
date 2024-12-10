@@ -45,6 +45,7 @@
         </foreach>
     </select>
 
+    <!-- 카테고리 필터 쿼리 -->
     <select id="getCompaniesByCategory" resultType="com.project.ofcourse.dto.CompanyDTO">
         SELECT
             id,
@@ -66,6 +67,25 @@
            OR stack_info LIKE CONCAT('%', #{category}, '%')
     </select>
 
+    <!-- 회사 검색 쿼리 -->
+    <select id="searchCompany" resultType="com.project.ofcourse.dto.CompanyDTO">
+        SELECT
+            id,
+            logo,
+            name,
+            category,
+            stack_info as stackInfo
+        FROM Company
+        WHERE name LIKE CONCAT('%', #{search}, '%')
+        ORDER BY id
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countSearchCompany" resultType="int">
+        SELECT COUNT(*)
+        FROM Company
+        WHERE name LIKE CONCAT('%', #{search}, '%')
+    </select>
 
 
 </mapper>

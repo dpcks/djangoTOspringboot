@@ -16,9 +16,17 @@ public interface CompanyMapper {
      * 각 회사는 관련된 기술 스택과 함께 반환됩니다.
      * @return List<CompanyDTO>
      */
+
+    int countCompanies();
+
     List<CompanyDTO> getAllCompanies(@Param("offset") int offset, @Param("pageSize") int pageSize);
 
     List<StackDTO> selectStacksByCompanyId(@Param("companyId") List<Long> companyId);
 
-    int countCompanies();
+    List<CompanyDTO> getCompaniesByCategory(@Param("category") String category,
+                                            @Param("offset") int offset,
+                                            @Param("pageSize") int pageSize);
+
+    int countCompaniesByCategory(@Param("category") String category);
+
 }

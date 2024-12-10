@@ -40,21 +40,36 @@
         <div class="btn-wrap">
             <div class="btn-r-wrap">
                 <p class="title">필터 </p>
-                <a class="btn" th:href="@{/company}">All</a>
-                <a class="btn" th:href="@{/companay(filter='foreign')}">외국기업</a>
-                <a class="btn" th:href="@{/companay(filter='comprehensive')}">종합</a>
-                <a class="btn" th:href="@{/companay(filter='social')}">소셜/컨텐츠</a>
-                <a class="btn" th:href="@{/companay(filter='ecommerce')}">이커머스</a>
-                <a class="btn" th:href="@{/companay(filter='trip')}">여행</a>
-                <a class="btn" th:href="@{/companay(filter='finance')}">금융/보험</a>
-                <a class="btn" th:href="@{/companay(filter='education')}">교육</a>
-                <a class="btn" th:href="@{/companay(filter='mobility')}">모빌리티</a>
-                <a class="btn" th:href="@{/companay(filter='foodtech')}">푸드테크</a>
-                <a class="btn" th:href="@{/companay(filter='realestate')}">부동산/인테리어</a>
-                <a class="btn" th:href="@{/companay(filter='healthcare')}">헬스케어</a>
-                <a class="btn" th:href="@{/companay(filter='ai')}">인공지능</a>
-                <a class="btn" th:href="@{/companay(filter='recruitment')}">채용</a>
-                <a class="btn" th:href="@{/companay(filter='etc')}">기타</a>
+                <a class ="btn" href="/company"
+                   th:classappend="${selectedCategory == 'All'} ? 'on' : ''">All</a>
+                <a class="btn" href="/company/filter?category=외국기업"
+                    th:classappend="${selectedCategory == '외국기업'} ? 'on' : ''">외국기업</a>
+                <a class="btn" href="/company/filter?category=종합 기업"
+                   th:classappend="${selectedCategory == '종합 기업'} ? 'on' : ''">종합</a>
+                <a class="btn" href="/company/filter?category=소셜/컨텐츠 기업"
+                   th:classappend="${selectedCategory == '소셜/컨텐츠 기업'} ? 'on' : ''">소셜/컨텐츠</a>
+                <a class="btn" href="/company/filter?category=이커머스 기업"
+                   th:classappend="${selectedCategory == '이커머스 기업'} ? 'on' : ''">이커머스</a>
+                <a class="btn" href="/company/filter?category=여행 기업"
+                   th:classappend="${selectedCategory == '여행 기업'} ? 'on' : ''">여행</a>
+                <a class="btn" href="/company/filter?category=금융/보험 기업"
+                   th:classappend="${selectedCategory == '금융/보험 기업'} ? 'on' : ''">금융/보험</a>
+                <a class="btn" href="/company/filter?category=교육 기업"
+                   th:classappend="${selectedCategory == '교육 기업'} ? 'on' : ''">교육</a>
+                <a class="btn" href="/company/filter?category=모빌리티 기업"
+                   th:classappend="${selectedCategory == '모빌리티 기업'} ? 'on' : ''">모빌리티</a>
+                <a class="btn" href="/company/filter?category=푸드테크 기업"
+                   th:classappend="${selectedCategory == '푸드테크 기업'} ? 'on' : ''">푸드테크</a>
+                <a class="btn" href="/company/filter?category=부동산/인테리어 기업"
+                   th:classappend="${selectedCategory == '부동산/인테리어 기업'} ? 'on' : ''">부동산/인테리어</a>
+                <a class="btn" href="/company/filter?category=헬스케어 기업"
+                   th:classappend="${selectedCategory == '헬스케어 기업'} ? 'on' : ''">헬스케어</a>
+                <a class="btn" href="/company/filter?category=인공지능 기업"
+                   th:classappend="${selectedCategory == '인공지능 기업'} ? 'on' : ''">인공지능</a>
+                <a class="btn" href="/company/filter?category=직장 기업"
+                   th:classappend="${selectedCategory == '직장 기업'} ? 'on' : ''">채용</a>
+                <a class="btn" href="/company/filter?category=기타 기업"
+                   th:classappend="${selectedCategory == '기타 기업'} ? 'on' : ''">기타</a>
             </div>
         </div>
     </div>
@@ -92,32 +107,37 @@
     </main>
 </div>
 <div class="pagination">
-    <div class="pagination">
-        <!-- 이전 버튼 -->
-        <a th:href="@{/company(page=${previousGroupStart})}" th:if="${hasPreviousGroup}" class="btn prev">
-            <i class="fa-solid fa-angle-left"></i>
-        </a>
-        <a class="btn prev disabled" th:if="${!hasPreviousGroup}">
-            <i class="fa-solid fa-angle-left"></i>
-        </a>
+    <!-- 이전 버튼 -->
+    <a th:href="${selectedCategory == 'All'}
+                ? @{/company(page=${previousGroupStart})}
+                : @{/company/filter(category=${selectedCategory}, page=${previousGroupStart})}"
+       th:if="${hasPreviousGroup}" class="btn prev">
+        <i class="fa-solid fa-angle-left"><</i>
+    </a>
+    <a class="btn prev disabled" th:if="${!hasPreviousGroup}">
+        <i class="fa-solid fa-angle-left"><</i>
+    </a>
 
-        <!-- 페이지 번호 출력 -->
-        <li th:each="page : ${pageRange}">
-            <a class="btn"
-               th:href="@{/company(page=${page})}"
-               th:classappend="${page == currentPage} ? 'on' : ''"
-               th:text="${page}"></a>
-        </li>
+    <!-- 페이지 번호 출력 -->
+    <li th:each="page : ${pageRange}">
+        <a class="btn"
+           th:href="${selectedCategory == 'All'}
+                   ? @{/company(page=${page})}
+                   : @{/company/filter(category=${selectedCategory}, page=${page})}"
+           th:classappend="${page == currentPage} ? 'on' : ''"
+           th:text="${page}"></a>
+    </li>
 
-        <!-- 다음 버튼 -->
-        <a th:href="@{/company(page=${nextGroupStart})}" th:if="${hasNextGroup}" class="btn next">
-            <i class="fa-solid fa-angle-right"></i>
-        </a>
-        <a class="btn next disabled" th:if="${!hasNextGroup}">
-            <i class="fa-solid fa-angle-right"></i>
-        </a>
-
-    </div>
+    <!-- 다음 버튼 -->
+    <a th:href="${selectedCategory == 'All'}
+                ? @{/company(page=${nextGroupStart})}
+                : @{/company/filter(category=${selectedCategory}, page=${nextGroupStart})}"
+       th:if="${hasNextGroup}" class="btn next">
+        <i class="fa-solid fa-angle-right">></i>
+    </a>
+    <a class="btn next disabled" th:if="${!hasNextGroup}">
+        <i class="fa-solid fa-angle-right">></i>
+    </a>
 </div>
 <footer>
     <p>

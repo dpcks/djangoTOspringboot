@@ -45,6 +45,29 @@
         </foreach>
     </select>
 
+    <select id="getCompaniesByCategory" resultType="com.project.ofcourse.dto.CompanyDTO">
+        SELECT
+            id,
+            logo,
+            name,
+            category,
+            stack_info as stackInfo
+        FROM Company
+        WHERE category = #{category}
+           OR stack_info LIKE CONCAT('%', #{category}, '%')
+        ORDER BY id
+            LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countCompaniesByCategory" resultType="int">
+        SELECT COUNT(*)
+        FROM Company
+        WHERE category = #{category}
+           OR stack_info LIKE CONCAT('%', #{category}, '%')
+    </select>
+
+
+
 </mapper>
 
 

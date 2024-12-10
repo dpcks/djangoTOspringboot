@@ -6,6 +6,7 @@ import com.project.ofcourse.dto.CompanyInfoDTO;
 import com.project.ofcourse.dto.StackDTO;
 import com.project.ofcourse.mapper.CompanyMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class CompanyService {
     private final CompanyMapper companyMapper;
 
@@ -131,6 +133,8 @@ public class CompanyService {
         Map<String, List<StackDTO>> assortMap = stacks.stream()
                 .collect(Collectors.groupingBy(StackDTO::getAssort));
 
+//        log.info("assortMap ==> "+assortMap);
+
         List<AssortDTO> assortList = assortMap.entrySet().stream()
                 .map(entry -> {
                     AssortDTO assort = new AssortDTO();
@@ -140,6 +144,8 @@ public class CompanyService {
                 }).collect(Collectors.toList());
 
         companyInfo.setAssortList(assortList);
+//        log.info("=================================================================");
+//        log.info("assortList => "+assortList);
 
         return companyInfo;
 

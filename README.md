@@ -2,7 +2,7 @@
 
 - 장고 프로젝트 링크: [GitHub Repository](https://github.com/dpcks/kokonenne)
 
-# Django와 Spring Boot의 주요 구성요소 비교
+### Django와 Spring Boot의 주요 구성요소 비교
 
 | Django 구성요소       | Spring Boot 구성요소         | 설명                                           |
 |-----------------------|-----------------------------|----------------------------------------------|

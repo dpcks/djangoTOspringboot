@@ -76,7 +76,7 @@
     </div>
     <main class="list-area skill">
         <ul>
-            <li class="list-card" th:each="company : ${companyList}">
+            <li class="list-card" th:each="company : ${pageResponse.data}">
                 <div class="company-icon">
                     <a th:href="@{/company/{id}(id=${company.id})}">
                         <img th:src="${ company.logo }" alt="기업 로고">
@@ -109,37 +109,45 @@
 </div>
 <div class="pagination">
     <!-- 이전 버튼 -->
-    <a th:href="${selectedCategory == 'All'}
-                ? @{/company(page=${previousGroupStart})}
-                : @{/company/filter(category=${selectedCategory}, page=${previousGroupStart})}"
-       th:if="${hasPreviousGroup}" class="btn prev">
-        <i class="fa-solid fa-angle-left"><</i>
+    <a th:if="${pageResponse.hasPreviousGroup}"
+       th:href="${selectedCategory == 'All'}
+                ? @{/company(page=${pageResponse.previousGroupStart})}
+                : @{/company/filter(category=${selectedCategory}, page=${pageResponse.previousGroupStart})}"
+       class="btn prev">
+        <i class="fa-solid fa-angle-left"></i>
+        <i class="fa-solid fa-angle-left"></i>
     </a>
-    <a class="btn prev disabled" th:if="${!hasPreviousGroup}">
-        <i class="fa-solid fa-angle-left"><</i>
+    <a th:if="${!pageResponse.hasPreviousGroup}" class="btn prev disabled">
+        <i class="fa-solid fa-angle-left"></i>
+        <i class="fa-solid fa-angle-left"></i>
     </a>
 
     <!-- 페이지 번호 출력 -->
-    <li th:each="page : ${pageRange}">
+    <li th:each="page : ${pageResponse.pageRange}">
         <a class="btn"
            th:href="${selectedCategory == 'All'}
                    ? @{/company(page=${page})}
                    : @{/company/filter(category=${selectedCategory}, page=${page})}"
-           th:classappend="${page == currentPage} ? 'on' : ''"
-           th:text="${page}"></a>
+           th:classappend="${page == pageResponse.currentPage} ? 'on' : ''"
+           th:text="${page}">
+        </a>
     </li>
 
     <!-- 다음 버튼 -->
-    <a th:href="${selectedCategory == 'All'}
-                ? @{/company(page=${nextGroupStart})}
-                : @{/company/filter(category=${selectedCategory}, page=${nextGroupStart})}"
-       th:if="${hasNextGroup}" class="btn next">
-        <i class="fa-solid fa-angle-right">></i>
+    <a th:if="${pageResponse.hasNextGroup}"
+       th:href="${selectedCategory == 'All'}
+                ? @{/company(page=${pageResponse.nextGroupStart})}
+                : @{/company/filter(category=${selectedCategory}, page=${pageResponse.nextGroupStart})}"
+       class="btn next">
+        <i class="fa-solid fa-angle-right"></i>
+        <i class="fa-solid fa-angle-right"></i>
     </a>
-    <a class="btn next disabled" th:if="${!hasNextGroup}">
-        <i class="fa-solid fa-angle-right">></i>
+    <a th:if="${!pageResponse.hasNextGroup}" class="btn next disabled">
+        <i class="fa-solid fa-angle-right"></i>
+        <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
+
 <footer>
     <p>
         Copyright © 2024. Yechanny All Rights Reserved.

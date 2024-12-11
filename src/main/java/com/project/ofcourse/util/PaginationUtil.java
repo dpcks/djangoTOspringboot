@@ -12,26 +12,34 @@ public class PaginationUtil {
     public static <T> PageResponseDTO<T> buildPageResponse(
             List<T> data, int totalItems, PageRequestDTO pageRequest, int groupSize){
 
+        // 전체 페이지 수 계산 (총 데이터 수 / 페이지 크기, 올림 처리)
         int totalPages = (int) Math.ceil((double) totalItems / pageRequest.getPageSize());
+
+        // 현재 그룹 계산 (현재 페이지 번호 / 그룹 크기, 올림 처리)
         int currentGroup = (int) Math.ceil((double) pageRequest.getPage() / groupSize);
+
+        // 현재 그룹의 시작 페이지 계산
         int startPage = (currentGroup - 1) * groupSize + 1;
+
+        // 현재 그룹의 끝 페이지 계산 (총 페이지 수를 넘지 않도록 최소값 설정)
         int endPage = Math.min(currentGroup * groupSize, totalPages);
 
+        // 시작 페이지부터 끝 페이지까지의 범위 생성
         List<Integer> pageRange = IntStream.rangeClosed(startPage, endPage)
                 .boxed()
                 .collect(Collectors.toList());
 
+        // PageResponseDTO 객체 생성 및 반환
         return new PageResponseDTO<>(
-                data,
-                pageRequest.getPage(),
-                totalPages,
-                pageRange,
-                startPage > 1,
-                endPage < totalPages,
-                Math.max(1, startPage - groupSize),
-                endPage + 1
+                data, // 현재 페이지의 데이터 리스트
+                pageRequest.getPage(), // 현재 페이지 번호
+                totalPages, // 전체 페이지 수
+                pageRange, // 현재 그룹의 페이지 범위
+                startPage > 1, // 이전 그룹이 존재하는지 여부
+                endPage < totalPages, // 다음 그룹이 존재하는지 여부
+                Math.max(1, startPage - groupSize), // 이전 그룹의 시작 페이지
+                endPage + 1 // 다음 그룹의 시작 페이지
         );
-
     }
-
 }
+

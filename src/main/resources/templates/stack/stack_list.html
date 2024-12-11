@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ofcourse</title>
+    <!-- fontawesome css cdn-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+          integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <!-- normalize css cdn-->
+    <link rel="stylesheet" th:href="@{/css/normalize.css}">
+    <!-- global css -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="list-page">
+<header>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+</header>
+<div class="title-area">
+    <h2 class="page-title">기술 스택별 정보</h2>
+    <p class="detail-title">기술 스택을 사용하는 기업 정보와 연관 강의를 추천 받아보세요!👍</p>
+</div>
+
+<div class="search-area">
+    <form th:action="@{/stack/search}" method="GET">
+        <div class="search-bar">
+            <input type="text" name="search" id="search-bar" placeholder="스택명을 입력해주세요 !">
+            <button type="submit" class="search-btn">검색</button>
+        </div>
+    </form>
+</div>
+
+<div class="content">
+    <div class="filter-area">
+        <div class="btn-wrap">
+            <div class="btn-r-wrap">
+                <p class="title">필터 </p>
+                <a class="btn" th:href="@{/stack}">All</a>
+                <a class="btn" th:href="@{/stack(filter='Language')}">언어</a>
+                <a class="btn" th:href="@{/stack(filter='frontend')}">프론트엔드</a>
+                <a class="btn" th:href="@{/stack(filter='backend')}">백엔드</a>
+                <a class="btn" th:href="@{/stack(filter='database')}">데이터베이스</a>
+                <a class="btn" th:href="@{/stack(filter='DevOps')}">데브옵스</a>
+                <a class="btn" th:href="@{/stack(filter='data')}">데이터</a>
+                <a class="btn" th:href="@{/stack(filter='mobile')}">모바일</a>
+                <a class="btn" th:href="@{/stack(filter='TestingTool')}">테스팅툴</a>
+                <a class="btn" th:href="@{/stack(filter='businessTool')}">협업툴</a>
+            </div>
+        </div>
+    </div>
+    <main class="list-area skill">
+        <ul>
+            <li class="list-card" th:each="s : ${pageResponse.data}">
+                <div class="company-icon">
+                    <a th:href="@{/stack/${s.id}}">
+                        <img th:src="${s.logo}" alt="스택 로고">
+                    </a>
+                </div>
+                <div class="info-box">
+                    <a th:href="@{/stack/${s.id}}" style="text-decoration: none;">
+                        <h3>
+                            <span th:text="${s.name}">스택 이름</span>
+                            <span class="sort" th:text="${s.assort}"></span>
+                        </h3>
+                    </a>
+                </div>
+                <p class="skill-info">연관 기술 스택</p>
+                <div class="skill-list">
+                    <ul>
+                        <li th:each="rs : ${s.relatedStackList}">
+                            <a class="skill-icon" th:href="@{/stack/${rs.relatedStackPk}}">
+                                <img th:src="${rs.relatedStackLogo}" alt="아이콘">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </main>
+</div>
+<div class="pagination">
+    <!-- 이전 버튼 -->
+    <a th:if="${pageResponse.hasPreviousGroup}"
+       th:href="@{/stack(page=${pageResponse.previousGroupStart})}"
+       class="btn prev">
+        <i class="fa-solid fa-angle-left"></i>
+        <i class="fa-solid fa-angle-left"></i>
+    </a>
+    <a th:if="${!pageResponse.hasPreviousGroup}" class="btn prev disabled">
+        <i class="fa-solid fa-angle-left"></i>
+        <i class="fa-solid fa-angle-left"></i>
+    </a>
+
+    <!-- 페이지 번호 출력 -->
+    <li th:each="page : ${pageResponse.pageRange}">
+        <a class="btn"
+           th:href="@{/stack(page=${page})}"
+           th:classappend="${page == pageResponse.currentPage} ? 'on' : ''"
+           th:text="${page}">
+        </a>
+    </li>
+
+    <!-- 다음 버튼 -->
+    <a th:if="${pageResponse.hasNextGroup}"
+       th:href="@{/stack(page=${pageResponse.nextGroupStart})}"
+       class="btn next">
+        <i class="fa-solid fa-angle-right"></i>
+        <i class="fa-solid fa-angle-right"></i>
+    </a>
+    <a th:if="${!pageResponse.hasNextGroup}" class="btn next disabled">
+        <i class="fa-solid fa-angle-right"></i>
+        <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+
+
+<footer>
+    <p>Copyright © 2024. Yechany All Rights Reserved.</p>
+</footer>
+
+<script th:src="@{/js/index.js}"></script>
+</body>
+
+</html>

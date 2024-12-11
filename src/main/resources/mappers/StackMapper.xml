@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.project.ofcourse.mapper.StackMapper">
+    <select id="countStacks" resultType="int">
+        SELECT COUNT(*) FROM Stack
+    </select>
+
+    <select id="getAllStacks" resultType="com.project.ofcourse.dto.StackDTO">
+        SELECT
+            id,
+            logo,
+            name,
+            described,
+            assort
+        FROM Stack
+        LIMIT #{offset}, #{pageSize};
+    </select>
+
+    <select id="selectRelatedStackByStackId" resultType="com.project.ofcourse.dto.RelatedStackDTO">
+        SELECT
+            rs.related_stack AS relatedStack,
+            rs.related_stack_logo AS relatedStackLogo,
+            rs.stack_name_id AS stackNameId
+        FROM
+            Related_Stack rs
+        WHERE
+            rs.stack_name_id IN
+            <foreach item="id" collection="stackId" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+    </select>
+</mapper>

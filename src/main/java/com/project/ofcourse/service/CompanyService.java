@@ -24,9 +24,9 @@ public class CompanyService {
     public int getTotalCompanies() {
         return companyMapper.countCompanies();
     }
-
+    // pageNumber -> 현재 요청한 페이지 번호, pageSize -> 한 페이지에 표시할 데이터의 개수
     public List<CompanyDTO> getCompaniesWithStacks(int pageNumber, int pageSize) {
-        // 페이지 시작위치 께산
+        // 페이지 시작위치 계산
         int offset = (pageNumber - 1) * pageSize;
 
         //1. 회사 정보 조회

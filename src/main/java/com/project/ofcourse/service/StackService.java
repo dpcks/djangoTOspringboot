@@ -1,5 +1,6 @@
 package com.project.ofcourse.service;
 
+import com.project.ofcourse.dto.PageRequestDTO;
 import com.project.ofcourse.dto.RelatedStackDTO;
 import com.project.ofcourse.dto.StackDTO;
 import com.project.ofcourse.mapper.StackMapper;
@@ -52,5 +53,37 @@ public class StackService {
         return stacks;
     }
 
+    //카테고리별 스택 필터 로직
+    public List<StackDTO> getStacksByAssort(String assort, int pageNumber, int pageSize) {
+        //페이지 시작위치 계산
+        int offset = (pageNumber - 1) * pageSize;
+
+        //1. 스택 정보 조회
+        List<StackDTO> stacks = stackMapper.getStacksByAssort(assort, offset, pageSize);
+        List<Long> stackId = stacks.stream()
+                .map(StackDTO::getId)
+                .collect(Collectors.toList());
+
+        //2. 관련 스택 정보 조회
+        List<RelatedStackDTO> relatedStacks = stackMapper.selectRelatedStackByStackId(stackId);
+
+        //3. 스택 ID별 relatedStacks 리스트 매핑
+        Map<Long, List<RelatedStackDTO>> relatedStackByStackId = relatedStacks.stream()
+                .collect(Collectors.groupingBy(
+                        relatedStack -> Optional.ofNullable(relatedStack.getStackNameId()).orElse(-1L),
+                        Collectors.toCollection(ArrayList::new)
+                ));
+
+        //4. StackDTO에 relatedStack 매핑
+        for (StackDTO stack : stacks) {
+            stack.setRelatedStackList(relatedStackByStackId.getOrDefault(stack.getId(), new ArrayList<>()));
+        }
+
+        return stacks;
+    }
+
+    public int countStacksByAssort(String assort) {
+        return stackMapper.countStacksByAssort(assort);
+    }
 
 }

@@ -16,4 +16,10 @@ public interface StackMapper {
 
     List<RelatedStackDTO> selectRelatedStackByStackId(@Param("stackId") List<Long> stackId);
 
+    List<StackDTO> getStacksByAssort(@Param("assort") String assort,
+                                       @Param("offset") int offset,
+                                       @Param("pageSize") int pageSize);
+
+    int countStacksByAssort(@Param("assort") String assort);
+
 }

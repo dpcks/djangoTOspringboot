@@ -39,16 +39,26 @@
         <div class="btn-wrap">
             <div class="btn-r-wrap">
                 <p class="title">필터 </p>
-                <a class="btn" th:href="@{/stack}">All</a>
-                <a class="btn" th:href="@{/stack(filter='Language')}">언어</a>
-                <a class="btn" th:href="@{/stack(filter='frontend')}">프론트엔드</a>
-                <a class="btn" th:href="@{/stack(filter='backend')}">백엔드</a>
-                <a class="btn" th:href="@{/stack(filter='database')}">데이터베이스</a>
-                <a class="btn" th:href="@{/stack(filter='DevOps')}">데브옵스</a>
-                <a class="btn" th:href="@{/stack(filter='data')}">데이터</a>
-                <a class="btn" th:href="@{/stack(filter='mobile')}">모바일</a>
-                <a class="btn" th:href="@{/stack(filter='TestingTool')}">테스팅툴</a>
-                <a class="btn" th:href="@{/stack(filter='businessTool')}">협업툴</a>
+                <a class ="btn" href="/stack"
+                   th:classappend="${selectedAssort == 'All'} ? 'on' : ''">All</a>
+                <a class="btn" href="/stack/filter?assort=언어"
+                   th:classappend="${selectedAssort == '언어'} ? 'on' : ''">언어</a>
+                <a class="btn" href="/stack/filter?assort=프론트엔드"
+                   th:classappend="${selectedAssort == '프론트엔드'} ? 'on' : ''">프론트엔드</a>
+                <a class="btn" href="/stack/filter?assort=백엔드"
+                   th:classappend="${selectedAssort == '백엔드'} ? 'on' : ''">백엔드</a>
+                <a class="btn" href="/stack/filter?assort=데이터베이스"
+                   th:classappend="${selectedAssort == '데이터베이스'} ? 'on' : ''">데이터베이스</a>
+                <a class="btn" href="/stack/filter?assort=데브옵스"
+                   th:classappend="${selectedAssort == '데브옵스'} ? 'on' : ''">데브옵스</a>
+                <a class="btn" href="/stack/filter?assort=데이터"
+                   th:classappend="${selectedAssort == '데이터'} ? 'on' : ''">데이터</a>
+                <a class="btn" href="/stack/filter?assort=모바일"
+                   th:classappend="${selectedAssort == '모바일'} ? 'on' : ''">모바일</a>
+                <a class="btn" href="/stack/filter?assort=테스팅툴"
+                   th:classappend="${selectedAssort == '테스팅툴'} ? 'on' : ''">테스팅툴</a>
+                <a class="btn" href="/stack/filter?assort=협업툴"
+                   th:classappend="${selectedAssort == '협업툴'} ? 'on' : ''">협업툴</a>
             </div>
         </div>
     </div>
@@ -85,7 +95,9 @@
 <div class="pagination">
     <!-- 이전 버튼 -->
     <a th:if="${pageResponse.hasPreviousGroup}"
-       th:href="@{/stack(page=${pageResponse.previousGroupStart})}"
+       th:href="${selectedAssort == 'All'}
+                ? @{/stack(page=${pageResponse.previousGroupStart})}
+                : @{/stack/filter(assort=${selectedAssort}, page=${pageResponse.previousGroupStart})}"
        class="btn prev">
         <i class="fa-solid fa-angle-left"></i>
         <i class="fa-solid fa-angle-left"></i>
@@ -98,7 +110,9 @@
     <!-- 페이지 번호 출력 -->
     <li th:each="page : ${pageResponse.pageRange}">
         <a class="btn"
-           th:href="@{/stack(page=${page})}"
+           th:href="${selectedAssort == 'All'}
+                ? @{/stack(page=${page})}
+                   : @{/stack/filter(assort=${selectedAssort}, page=${page})}"
            th:classappend="${page == pageResponse.currentPage} ? 'on' : ''"
            th:text="${page}">
         </a>
@@ -106,7 +120,9 @@
 
     <!-- 다음 버튼 -->
     <a th:if="${pageResponse.hasNextGroup}"
-       th:href="@{/stack(page=${pageResponse.nextGroupStart})}"
+       th:href="${selectedAssort == 'All'}
+                ? @{/stack(page=${pageResponse.nextGroupStart})}
+                : @{/stack/filter(assort=${selectedAssort}, page=${pageResponse.nextGroupStart})}"
        class="btn next">
         <i class="fa-solid fa-angle-right"></i>
         <i class="fa-solid fa-angle-right"></i>

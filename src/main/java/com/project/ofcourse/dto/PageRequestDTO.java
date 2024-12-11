@@ -12,7 +12,8 @@ public class PageRequestDTO {
 
     private int page = 1; //현재 페이지
     private int pageSize = 12; // 한 페이지당 데이터 수
-    private String category = "All"; // 카테고리 (기본값 All)
+    private String category = "All"; // 회사 카테고리 (기본값 All)
+    private String assort = "All"; // 스택 분류
     private String search = null; // 검색 키워드 (옵션)
 
     public int getOffset() {

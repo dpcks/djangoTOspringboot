@@ -16,7 +16,7 @@
             described,
             assort
         FROM Stack
-        LIMIT #{offset}, #{pageSize};
+        LIMIT #{offset}, #{pageSize}
     </select>
 
     <select id="selectRelatedStackByStackId" resultType="com.project.ofcourse.dto.RelatedStackDTO">
@@ -31,5 +31,25 @@
             <foreach item="id" collection="stackId" open="(" separator="," close=")">
                 #{id}
             </foreach>
+    </select>
+
+    <!-- 카테고리 필터 쿼리 -->
+    <select id="getStacksByAssort" resultType="com.project.ofcourse.dto.StackDTO">
+        SELECT
+            id,
+            logo,
+            name,
+            described,
+            assort
+        FROM Stack
+        WHERE assort LIKE CONCAT('%', #{assort}, '%')
+        ORDER BY id
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countStacksByAssort" resultType="int">
+        SELECT COUNT(*)
+        FROM Stack
+        WHERE assort LIKE CONCAT('%', #{assort}, '%')
     </select>
 </mapper>

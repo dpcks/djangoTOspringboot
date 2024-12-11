@@ -43,3 +43,8 @@ public class PaginationUtil {
     }
 }
 
+//예제
+//총 데이터(totalItems): 100개
+//현재 페이지 요청(pageRequest.getPage()): 7페이지
+//페이지 크기(pageRequest.getPageSize()): 10개 (한 페이지에 10개씩 표시)
+//그룹 크기(groupSize): 5페이지 (한 번에 표시되는 페이지 번호가 5개씩)

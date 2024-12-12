@@ -1,9 +1,9 @@
 package com.project.ofcourse.service;
 
-import com.project.ofcourse.dto.AssortDTO;
-import com.project.ofcourse.dto.CompanyDTO;
-import com.project.ofcourse.dto.CompanyInfoDTO;
-import com.project.ofcourse.dto.StackDTO;
+import com.project.ofcourse.dto.stack.AssortDTO;
+import com.project.ofcourse.dto.company.CompanyDTO;
+import com.project.ofcourse.dto.company.CompanyInfoDTO;
+import com.project.ofcourse.dto.stack.StackDTO;
 import com.project.ofcourse.mapper.CompanyMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 @Service

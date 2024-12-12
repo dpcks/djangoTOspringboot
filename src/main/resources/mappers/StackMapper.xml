@@ -8,7 +8,7 @@
         SELECT COUNT(*) FROM Stack
     </select>
 
-    <select id="getAllStacks" resultType="com.project.ofcourse.dto.StackDTO">
+    <select id="getAllStacks" resultType="com.project.ofcourse.dto.stack.StackDTO">
         SELECT
             id,
             logo,
@@ -19,22 +19,26 @@
         LIMIT #{offset}, #{pageSize}
     </select>
 
-    <select id="selectRelatedStackByStackId" resultType="com.project.ofcourse.dto.RelatedStackDTO">
+    <select id="selectRelatedStackByStackId" resultType="com.project.ofcourse.dto.stack.RelatedStackDTO">
         SELECT
             rs.related_stack AS relatedStack,
             rs.related_stack_logo AS relatedStackLogo,
             rs.stack_name_id AS stackNameId
         FROM
             Related_Stack rs
-        WHERE
-            rs.stack_name_id IN
-            <foreach item="id" collection="stackId" open="(" separator="," close=")">
-                #{id}
-            </foreach>
+            <if test="stackId != null and stackId.size() > 0">
+                WHERE rs.stack_name_id IN
+                <foreach item="id" collection="stackId" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="stackId == null or stackId.size() == 0">
+                WHERE 1 = 0
+            </if>
     </select>
 
     <!-- 카테고리 필터 쿼리 -->
-    <select id="getStacksByAssort" resultType="com.project.ofcourse.dto.StackDTO">
+    <select id="getStacksByAssort" resultType="com.project.ofcourse.dto.stack.StackDTO">
         SELECT
             id,
             logo,
@@ -51,5 +55,33 @@
         SELECT COUNT(*)
         FROM Stack
         WHERE assort LIKE CONCAT('%', #{assort}, '%')
+    </select>
+
+    <!-- 스택 검색 쿼리 -->
+    <select id="searchStack" resultType="com.project.ofcourse.dto.stack.StackDTO">
+        SELECT
+            id,
+            logo,
+            name,
+            described,
+            assort
+        FROM Stack
+        WHERE name LIKE CONCAT('%', #{search}, '%')
+        ORDER BY id
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="countSearchStack" resultType="int">
+        SELECT COUNT(*)
+        FROM Company
+        WHERE name LIKE CONCAT('%',#{search},'%')
+    </select>
+
+    <!-- 검색어 자동완성 -->
+    <select id="autoKeywordStack" resultType="String">
+        SELECT name
+        FROM Stack
+        WHERE name LIKE CONCAT('%',#{keyword},'%')
+        LIMIT 10
     </select>
 </mapper>

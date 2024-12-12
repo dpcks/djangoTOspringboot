@@ -1,7 +1,7 @@
 package com.project.ofcourse.controller;
 
-import com.project.ofcourse.dto.CompanyDTO;
-import com.project.ofcourse.dto.CompanyInfoDTO;
+import com.project.ofcourse.dto.company.CompanyDTO;
+import com.project.ofcourse.dto.company.CompanyInfoDTO;
 import com.project.ofcourse.dto.PageRequestDTO;
 import com.project.ofcourse.dto.PageResponseDTO;
 import com.project.ofcourse.service.CompanyService;
@@ -60,7 +60,7 @@ public class CompanyController {
         if (companyList.isEmpty()) {
             model.addAttribute("errorMessage", "검색 결과가 없습니다.");
             model.addAttribute("search", search);
-            return "error/no_result"; // 검색 결과 없음 시 오류 페이지
+            return "error/no_result_company"; // 검색 결과 없음 시 오류 페이지
         }
 
         PageResponseDTO<CompanyDTO> pageResponse = PaginationUtil.buildPageResponse(

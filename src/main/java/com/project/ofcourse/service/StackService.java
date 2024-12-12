@@ -1,8 +1,7 @@
 package com.project.ofcourse.service;
 
-import com.project.ofcourse.dto.PageRequestDTO;
-import com.project.ofcourse.dto.RelatedStackDTO;
-import com.project.ofcourse.dto.StackDTO;
+import com.project.ofcourse.dto.stack.RelatedStackDTO;
+import com.project.ofcourse.dto.stack.StackDTO;
 import com.project.ofcourse.mapper.StackMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -86,4 +85,36 @@ public class StackService {
         return stackMapper.countStacksByAssort(assort);
     }
 
+    // 스택 검색 로직
+    public List<StackDTO> searchStack(String search, int pageNumber, int pageSize) {
+        int offset = (pageNumber - 1) * pageSize;
+
+        List<StackDTO> stacks = stackMapper.searchStack(search, offset, pageSize);
+        List<Long> stackId = stacks.stream()
+                .map(StackDTO::getId)
+                .collect(Collectors.toList());
+
+        List<RelatedStackDTO> relatedStacks = stackMapper.selectRelatedStackByStackId(stackId);
+
+        Map<Long, List<RelatedStackDTO>> relatedStackByStackId = relatedStacks.stream()
+                .collect(Collectors.groupingBy(
+                        relatedStack -> Optional.ofNullable(relatedStack.getStackNameId()).orElse(-1L),
+                        Collectors.toCollection(ArrayList::new)
+                ));
+
+        for (StackDTO stack : stacks) {
+            stack.setRelatedStackList(relatedStackByStackId.getOrDefault(stack.getId(), new ArrayList<>()));
+        }
+
+        return stacks;
+    }
+
+    public int TotalSearchStack(String search) {
+        return stackMapper.countSearchStack(search);
+    }
+
+    // 검색어 자동완성
+    public List<String> autoKeywordStack(String keyword) {
+        return stackMapper.autoKeywordStack(keyword);
+    }
 }

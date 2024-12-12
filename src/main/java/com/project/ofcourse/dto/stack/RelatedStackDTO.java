@@ -1,4 +1,4 @@
-package com.project.ofcourse.dto;
+package com.project.ofcourse.dto.stack;
 
 import lombok.Data;
 

@@ -28,9 +28,10 @@
 <div class="search-area">
     <form th:action="@{/stack/search}" method="GET">
         <div class="search-bar">
-            <input type="text" name="search" id="search-bar" placeholder="스택명을 입력해주세요 !">
+            <input type="text" name="search" id="search-bar" placeholder="스택명을 입력해주세요 !" th:value="${search}">
             <button type="submit" class="search-btn">검색</button>
         </div>
+        <div id="autocomplete-results" class="autocomplete-results"></div>
     </form>
 </div>
 

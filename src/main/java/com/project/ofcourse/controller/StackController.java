@@ -2,7 +2,7 @@ package com.project.ofcourse.controller;
 
 import com.project.ofcourse.dto.PageRequestDTO;
 import com.project.ofcourse.dto.PageResponseDTO;
-import com.project.ofcourse.dto.StackDTO;
+import com.project.ofcourse.dto.stack.StackDTO;
 import com.project.ofcourse.service.StackService;
 import com.project.ofcourse.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -45,5 +46,28 @@ public class StackController {
     public String filterByAssort(PageRequestDTO pageRequest, Model model) {
         pageRequest.setAssort(pageRequest.getAssort() == null ? "All" : pageRequest.getAssort());
         return getStackList(pageRequest, model);
+    }
+
+    // 스택 검색
+    @GetMapping("/search")
+    public String searchStack(@RequestParam String search, PageRequestDTO pageRequest, Model model) {
+        pageRequest.setSearch(search);
+
+        int totalStacks = stackService.TotalSearchStack(search);
+        List<StackDTO> stackList = stackService.searchStack(search, pageRequest.getPage(), pageRequest.getPageSize());
+
+        if (stackList.isEmpty()) {
+            model.addAttribute("errorMessage", "검색 결과가 없습니다.");
+            model.addAttribute("search", search);
+            return "error/no_result_stack";
+        }
+
+        PageResponseDTO<StackDTO> pageResponse = PaginationUtil.buildPageResponse(
+                stackList, totalStacks, pageRequest, 10);
+
+        model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("search", search);
+
+        return "stack/stack_list";
     }
 }

@@ -109,6 +109,9 @@ header nav ul li > a:hover {
     color: var(--main-color);
     transition: var(--motion);
 }
+header nav ul li.active a {
+    color: var(--main-color);
+}
 header nav ul li::after {
     content: "";
     display: block;
@@ -899,8 +902,10 @@ footer p {
 }
 
 .autocomplete-results div {
+    text-align: left;
     padding: 10px;
     cursor: pointer;
+    font-size: 15px;
 }
 
 .autocomplete-results div:hover {

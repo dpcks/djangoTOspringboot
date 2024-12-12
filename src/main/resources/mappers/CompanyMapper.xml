@@ -12,7 +12,7 @@
     <!--
         resultType : SQL쿼리 결과를 Java객체로 변환할 떄 사용할 클래스, 결과과 CompanyDTO, StackDTO라는 클래스의 형태로 반환됨.
     -->
-    <select id ="getAllCompanies" resultType="com.project.ofcourse.dto.CompanyDTO">
+    <select id ="getAllCompanies" resultType="com.project.ofcourse.dto.company.CompanyDTO">
         SELECT
             id,
             logo,
@@ -32,7 +32,7 @@
         collection="companyId": 입력값으로 제공된 companyId 컬렉션을 반복
 
     -->
-    <select id="selectStacksByCompanyId" resultType="com.project.ofcourse.dto.StackDTO">
+    <select id="selectStacksByCompanyId" resultType="com.project.ofcourse.dto.stack.StackDTO">
         SELECT
         Stack.id, Stack.name, Stack.logo, Company_Stack.company_id
         FROM
@@ -50,7 +50,7 @@
     </select>
 
     <!-- 카테고리 필터 쿼리 -->
-    <select id="getCompaniesByCategory" resultType="com.project.ofcourse.dto.CompanyDTO">
+    <select id="getCompaniesByCategory" resultType="com.project.ofcourse.dto.company.CompanyDTO">
         SELECT
             id,
             logo,
@@ -72,7 +72,7 @@
     </select>
 
     <!-- 회사 검색 쿼리 -->
-    <select id="searchCompany" resultType="com.project.ofcourse.dto.CompanyDTO">
+    <select id="searchCompany" resultType="com.project.ofcourse.dto.company.CompanyDTO">
         SELECT
             id,
             logo,
@@ -100,7 +100,7 @@
     </select>
 
     <!-- 회사 기본 정보 가져오기 -->
-    <select id="getCompanyInfoById" resultType="com.project.ofcourse.dto.CompanyInfoDTO">
+    <select id="getCompanyInfoById" resultType="com.project.ofcourse.dto.company.CompanyInfoDTO">
         SELECT 
             id, name, logo, 
             stack_info as stackInfo, 
@@ -112,7 +112,7 @@
     </select>
     
     <!--특정 회사의 스택 정보 가져오기 -->
-    <select id="getStacksByCompanyId" resultType="com.project.ofcourse.dto.StackDTO">
+    <select id="getStacksByCompanyId" resultType="com.project.ofcourse.dto.stack.StackDTO">
         SELECT s.id, s.name, s.logo, s.described, s.assort, cs.company_id
         FROM Stack s
                  JOIN Company_Stack cs ON s.id = cs.stack_id

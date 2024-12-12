@@ -1,8 +1,8 @@
 package com.project.ofcourse.mapper;
 
-import com.project.ofcourse.dto.CompanyDTO;
-import com.project.ofcourse.dto.CompanyInfoDTO;
-import com.project.ofcourse.dto.StackDTO;
+import com.project.ofcourse.dto.company.CompanyDTO;
+import com.project.ofcourse.dto.company.CompanyInfoDTO;
+import com.project.ofcourse.dto.stack.StackDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -89,7 +89,7 @@ public interface CompanyMapper {
      * @param companyId 회사 ID
      * @return 회사의 상세 정보 리스트
      */
-    List<String> detailCompany(@Param("companyId") int companyId);
+//    List<String> detailCompany(@Param("companyId") int companyId);
 
     /**
      * 특정 회사의 기본 정보를 가져옵니다.

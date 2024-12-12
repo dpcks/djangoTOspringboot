@@ -1,13 +1,12 @@
-package com.project.ofcourse.dto;
+package com.project.ofcourse.dto.company;
 
+import com.project.ofcourse.dto.stack.AssortDTO;
 import lombok.Data;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Data
-public class CompanyDTO {
+public class CompanyInfoDTO {
     private Long id; // 회사 ID
     private String name; // 회사 이름
     private String logo; // 회사 로고 URL
@@ -15,5 +14,5 @@ public class CompanyDTO {
     private String companyLink; // 회사 웹사이트 링크
     private String companyRecruitLink; // 채용 링크
     private String category; // 회사 카테고리
-    private List<StackDTO> stackList; //스택 리스트
+    private List<AssortDTO> assortList; //스택 카테고리 리스트
 }

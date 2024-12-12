@@ -1,7 +1,7 @@
 package com.project.ofcourse.mapper;
 
-import com.project.ofcourse.dto.RelatedStackDTO;
-import com.project.ofcourse.dto.StackDTO;
+import com.project.ofcourse.dto.stack.RelatedStackDTO;
+import com.project.ofcourse.dto.stack.StackDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,5 +21,15 @@ public interface StackMapper {
                                        @Param("pageSize") int pageSize);
 
     int countStacksByAssort(@Param("assort") String assort);
+
+    List<StackDTO> searchStack(@Param("search") String search,
+                               @Param("offset") int offset,
+                               @Param("pageSize") int pageSize);
+
+    int countSearchStack(@Param("search") String search);
+
+    // 스택이름 자동완성 키워드
+    List<String> autoKeywordStack(@Param("keyword") String keyword);
+
 
 }

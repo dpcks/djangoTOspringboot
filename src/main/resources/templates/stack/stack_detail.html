@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ofcourse</title>
+    <!-- fontawesome css cdn-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+          integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- normalize css cdn-->
+    <link rel="stylesheet" th:href="@{/css/normalize.css}">
+    <!-- global css -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body class="list-page">
+<header>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+</header>
+<div class="view content col-2">
+    <aside>
+        <div class="skill-info-area">
+            <div class="skill-icon">
+                <!-- 스택 이름, 로고 -->
+                <img th:src="${stackInfo.logo}" alt="skill icon">
+            </div>
+            <h3 th:text="${stackInfo.name}"></h3>
+            <br>
+            <p class="skill-category" th:text="${stackInfo.assort}"></p>
+            <p class="skill-info" th:text="${stackInfo.described}"></p>
+        </div>
+    </aside>
+    <!-- 강의 목록 -->
+    <main class="view-area list-area">
+        <div class="info-box">
+            <h3 class="skill-title"> 연관 강의 BEST5 </h3>
+            <ul class="no-course-list">
+                <!-- 강의 리스트가 비어있는 경우 -->
+                <li class="no-list-card" th:if="${stackInfo.bestCourseList.size() == 0}">
+                        <a class="no-course">강의가 없습니다.😭 <br> 강의가 생기면 즉시 업데이트 하겟습니다!!</a>
+                </li>
+            </ul>
+
+            <ul class="course-list">
+                <!-- 강의 리스트가 존재하는 경우 -->
+                <li class="list-card" th:each="course : ${stackInfo.bestCourseList}">
+                    <div class="img-box">
+                        <a th:href="${course.url}" target="_blank">
+                            <img th:src="${course.imgUrl}" alt="강의 예시 이미지">
+                        </a>
+                    </div>
+                    <div class="info-box">
+                        <h3>
+                            <a th:href="${course.url}"
+                               th:text="${course.title.length() > 20 ? course.title.substring(0, 20) + '...' : course.title}"></a>
+                        </h3>
+                        <p class="teacher" th:text="${course.teacher}"></p>
+                        <p class="rate" th:text="${course.score}"></p>
+                        <p class="price" th:switch="${course.price}">
+                            <!-- 가격이 null인 경우 -->
+                            <span th:case="null">🔗</span>
+                            <!-- 가격이 0인 경우 -->
+                            <span th:case="0">무료</span>
+                            <!-- 가격이 0보다 큰 경우 -->
+                            <span th:case="*"
+                                  th:text="${#numbers.formatInteger(course.price, 3,'COMMA')} + ' 원'"></span>
+                        </p>
+                    </div>
+                </li>
+            </ul>
+            <!-- 기업 목록 -->
+        </div>
+        <div class="info-box">
+            <h3 class="skill-title">사용중인 기업</h3>
+            <ul class="skill-list">
+                <li th:each="company : ${stackInfo.companyList}">
+                    <a th:href="@{/company/{id}(id=${company.id})}">
+                        <i class="skill-icon"><img th:src="${company.logo}" alt="스킬 아이콘"></i>
+                        <p class="skill-name" th:text="${company.name}"></p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </main>
+</div>
+<footer>
+    <p>
+        Copyright © 2024. Yechanny All Rights Reserved.
+    </p>
+</footer>
+</body>
+
+</html>

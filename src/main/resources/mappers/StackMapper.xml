@@ -84,4 +84,31 @@
         WHERE name LIKE CONCAT('%',#{keyword},'%')
         LIMIT 10
     </select>
+
+    <!-- 해당 스택 기본 정보 가져오기 -->
+    <select id="getStackInfoById" resultType="com.project.ofcourse.dto.stack.StackDTO">
+        SELECT
+            id, name, logo, assort, described
+        FROM Stack
+        WHERE id = #{id}
+    </select>
+
+    <!-- 해당 스택을 사용하는 회사 정보 가져오기 -->
+    <select id="getCompaniesByStackId" resultType="com.project.ofcourse.dto.company.CompanyDTO">
+        SELECT c.id, c.name, c.logo, cs.stack_id
+        FROM Company c
+            JOIN Company_Stack cs ON c.id = cs.company_id
+        WHERE cs.stack_id = #{stackId}
+    </select>
+
+    <!-- 해당 스택의 베스트5 강의 가져오기 (랭크 순) -->
+    <select id="getBestCourseByStackId" resultType="com.project.ofcourse.dto.course.CourseDTO">
+        SELECT c.id, c.img_url AS imgUrl,
+               c.url, c.title, c.teacher, c.score, c.price, cs.stack_id
+        FROM Course c
+            JOIN Course_Stack cs ON c.id = cs.course_id
+        WHERE cs.stack_id = #{stackId}
+        ORDER BY c.`rank`
+        LIMIT 5
+    </select>
 </mapper>

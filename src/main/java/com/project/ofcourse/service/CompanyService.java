@@ -128,7 +128,7 @@ public class CompanyService {
         //해당 회사와 연결된 스택 가져오기
         List<StackDTO> stacks = companyMapper.getStacksByCompanyId(id);
 
-        //스택을 AssortDTO로 그룹화
+        //스택을 Assort로 그룹화
         Map<String, List<StackDTO>> assortMap = stacks.stream()
                 .collect(Collectors.groupingBy(StackDTO::getAssort));
 

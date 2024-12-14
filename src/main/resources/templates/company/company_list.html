@@ -21,8 +21,8 @@
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 </header>
 <div class="title-area">
-    <h2 class="page-title">기업별 기술 스택</h2>
-    <h3>기업들이 무슨 기술 스택을 사용하는지 확인해봐~ 🤣</h3>
+    <h2 class="page-title">기업별 기술 스택</h2><br>
+    <p class="detail-title">기업들이 무슨 기술 스택을 사용하는지 확인해봐~ 🤣</p>
 </div>
 <div class="search-area">
     <form th:action="@{/company/search}" method="GET">
@@ -154,6 +154,7 @@
     </p>
 </footer>
 <script th:src="@{/js/index.js}"></script>
+<script th:src="@{/js/autocomplete.js}"></script>
 </body>
 
 </html>

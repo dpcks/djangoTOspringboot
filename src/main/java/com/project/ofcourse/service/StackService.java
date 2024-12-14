@@ -1,5 +1,7 @@
 package com.project.ofcourse.service;
 
+import com.project.ofcourse.dto.company.CompanyDTO;
+import com.project.ofcourse.dto.course.CourseDTO;
 import com.project.ofcourse.dto.stack.RelatedStackDTO;
 import com.project.ofcourse.dto.stack.StackDTO;
 import com.project.ofcourse.mapper.StackMapper;
@@ -116,5 +118,21 @@ public class StackService {
     // 검색어 자동완성
     public List<String> autoKeywordStack(String keyword) {
         return stackMapper.autoKeywordStack(keyword);
+    }
+
+    //해당 스택 세부정도
+    public StackDTO getStackInfoById(Long id) {
+        //스택 기본 정보 가져오기
+        StackDTO stackInfo = stackMapper.getStackInfoById(id);
+
+        //해당 스택을 사용하는 회사 리스트 가져오기
+        List<CompanyDTO> companies = stackMapper.getCompaniesByStackId(id);
+        //해당 스택 베스트 강의 리스트 가져오기
+        List<CourseDTO> bestCourse = stackMapper.getBestCourseByStackId(id);
+
+        stackInfo.setCompanyList(companies);
+        stackInfo.setBestCourseList(bestCourse);
+
+        return stackInfo;
     }
 }

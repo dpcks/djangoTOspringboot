@@ -1,4 +1,4 @@
-package com.project.ofcourse.controller;
+package com.project.ofcourse.controller.stack;
 
 import com.project.ofcourse.service.StackService;
 import lombok.RequiredArgsConstructor;

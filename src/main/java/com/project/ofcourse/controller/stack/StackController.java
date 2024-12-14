@@ -1,4 +1,4 @@
-package com.project.ofcourse.controller;
+package com.project.ofcourse.controller.stack;
 
 import com.project.ofcourse.dto.PageRequestDTO;
 import com.project.ofcourse.dto.PageResponseDTO;
@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -30,6 +31,7 @@ public class StackController {
 
         List<StackDTO> stackList = pageRequest.getAssort().equals("All")
                 ? stackService.getAllStacks(pageRequest.getPage(), pageRequest.getPageSize())
+
                 :stackService.getStacksByAssort(pageRequest.getAssort(), pageRequest.getPage(), pageRequest.getPageSize());
 
         PageResponseDTO<StackDTO> pageResponse = PaginationUtil.buildPageResponse(
@@ -69,5 +71,17 @@ public class StackController {
         model.addAttribute("search", search);
 
         return "stack/stack_list";
+    }
+
+    // 스택 세부 정보 디테일
+    @GetMapping("/{id}")
+    public String detailStack(@PathVariable Long id, Model model) {
+        // 스택 정보 가져오기
+        StackDTO stackInfo = stackService.getStackInfoById(id);
+
+        // 모델에 데이터 추가
+        model.addAttribute("stackInfo", stackInfo);
+
+        return "stack/stack_detail";
     }
 }

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ofcourse</title>
+    <!-- fontawesome css cdn-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+          integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <!-- normalize css cdn-->
+    <link rel="stylesheet" th:href="@{/css/normalize.css}">
+    <!-- global css -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/list.js}"></script>
+    <script type="text/javascript" th:src="@{/js/disabledbtn.js}"></script>
+    <script type="text/javascript" th:src="@{/js/ready.js}"></script>
+
+</head>
+
+<body class="list-page">
+<header>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+</header>
+
+<div class="title-area">
+    <h2 class="page-title">강의 찾기</h2><br>
+    <p class="detail-title">공부하고 싶은 기술스택의 강의를 찾아보세요🔎</p>
+</div>
+
+<div class="search-area">
+    <form th:action="@{/search}" method="GET">
+        <div class="search-bar">
+            <input type="text" name="search" id="search-bar">
+            <button type="submit" class="search-btn">검색</button>
+        </div>
+    </form>
+</div>
+<div class="content">
+    <div class="filter-area">
+        <div class="btn-wrap">
+            <div class="btn-l-wrap">
+                <!-- Assort 버튼 -->
+                <button class="btn on" onclick="updateStacks('언어', this)">언어</button>
+                <button class="btn" onclick="updateStacks('프론트엔드', this)">프론트엔드</button>
+                <button class="btn" onclick="updateStacks('백엔드', this)">백엔드</button>
+                <button class="btn" onclick="updateStacks('데이터베이스', this)">데이터베이스</button>
+                <button class="btn" onclick="updateStacks('데브옵스', this)">데브옵스</button>
+                <button class="btn" onclick="updateStacks('데이터', this)">데이터</button>
+                <button class="btn" onclick="updateStacks('모바일', this)">모바일</button>
+                <button class="btn" onclick="updateStacks('테스팅툴', this)">테스팅툴</button>
+                <button class="btn" onclick="updateStacks('협업툴', this)">협업툴</button>
+            </div>
+            <div class="btn-r-wrap">
+                <p class="title">필터 </p>
+                <a class="btn" th:href="@{/course}">기본</a>
+                <a class="btn" th:href="@{/course(sort='review')}">리뷰많은순</a>
+                <a class="btn" th:href="@{/course(sort='recommend')}">추천많은순</a>
+                <a class="btn" th:href="@{/course(sort='score')}">평점순</a>
+                <a class="btn" th:href="@{/course(sort='free')}">무료</a>
+            </div>
+        </div>
+
+        <form th:action="@{/filter}" method="GET">
+            <!-- 스택 리스트 -->
+            <div class="skill-info-area">
+                <div class="container" id="stack-list">
+                    <!-- AJAX로 갱신될 영역 -->
+                </div>
+            </div>
+            <button type="submit" onclick="disbtn()" class="search-btn">검색</button>
+        </form>
+    </div>
+
+
+    <main class="list-area">
+        <ul>
+            <li th:each="course : ${pageResponse.data}" class="list-card">
+                <a th:href="${course.url}" target="_blank">
+                    <div class="img-box">
+                        <img th:src="${course.imgUrl}" alt="강의 예시 이미지">
+                    </div>
+                </a>
+                <div class="info-box">
+                    <h3>
+                        <a th:href="${course.url}"
+                           th:text="${course.title.length() > 50 ? course.title.substring(0, 50) + '...' : course.title}"></a>
+                    </h3>
+                    <div class="keywords" th:each="stack : ${course.stackList}">
+                        <span class="point" th:text="${stack.name}"></span>
+                    </div>
+                    <p class="level" th:text="'레벨 - ' + ${course.level}"></p>
+                    <p class="teacher" th:text="${course.teacher}"></p>
+                    <p class="rate" th:text="${course.score} + '(리뷰긍정도 : ' + ${course.sentiment} + ')'"></p>
+                    <p class="price" th:switch="${course.price}">
+                        <!-- 가격이 null인 경우 -->
+                        <span th:case="null">🔗</span>
+                        <!-- 가격이 0인 경우 -->
+                        <span th:case="0">무료</span>
+                        <!-- 가격이 0보다 큰 경우 -->
+                        <span th:case="*"
+                              th:text="${#numbers.formatInteger(course.price, 3,'COMMA')} + ' 원'"></span>
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </main>
+</div>
+
+<!-- Pagination -->
+<div class="pagination">
+    <!-- 이전 버튼 -->
+    <a th:if="${pageResponse.hasPreviousGroup}"
+       th:href="@{/course(page=${pageResponse.previousGroupStart})}"
+       class="btn prev">
+        <i class="fa-solid fa-angle-left"></i>
+        <i class="fa-solid fa-angle-left"></i>
+    </a>
+    <a th:if="${!pageResponse.hasPreviousGroup}" class="btn prev disabled">
+        <i class="fa-solid fa-angle-left"></i>
+        <i class="fa-solid fa-angle-left"></i>
+    </a>
+
+    <!-- 페이지 번호 출력 -->
+    <li th:each="page : ${pageResponse.pageRange}">
+        <a class="btn"
+           th:href="@{/course(page=${page})}"
+           th:classappend="${page == pageResponse.currentPage} ? 'on' : ''"
+           th:text="${page}">
+        </a>
+    </li>
+
+    <!-- 다음 버튼 -->
+    <a th:if="${pageResponse.hasNextGroup}"
+       th:href="@{/course(page=${pageResponse.nextGroupStart})}"
+       class="btn next">
+        <i class="fa-solid fa-angle-right"></i>
+        <i class="fa-solid fa-angle-right"></i>
+    </a>
+    <a th:if="${!pageResponse.hasNextGroup}" class="btn next disabled">
+        <i class="fa-solid fa-angle-right"></i>
+        <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+<footer>
+    <p>
+        Copyright © 2023. Kokonenne All Rights Reserved.
+    </p>
+</footer>
+</body>
+
+<script th:src="@{/js/index.js}"></script>
+</html>

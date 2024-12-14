@@ -21,7 +21,7 @@
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 </header>
 <div class="title-area">
-    <h2 class="page-title">기술 스택별 정보</h2>
+    <h2 class="page-title">기술 스택별 정보</h2><br>
     <p class="detail-title">기술 스택을 사용하는 기업 정보와 연관 강의를 추천 받아보세요!👍</p>
 </div>
 
@@ -67,12 +67,12 @@
         <ul>
             <li class="list-card" th:each="s : ${pageResponse.data}">
                 <div class="company-icon">
-                    <a th:href="@{/stack/${s.id}}">
+                    <a th:href="@{/stack/{id}(id=${s.id})}">
                         <img th:src="${s.logo}" alt="스택 로고">
                     </a>
                 </div>
                 <div class="info-box">
-                    <a th:href="@{/stack/${s.id}}" style="text-decoration: none;">
+                    <a th:href="@{/stack/{id}(id=${s.id})}" style="text-decoration: none;">
                         <h3>
                             <span th:text="${s.name}">스택 이름</span>
                             <span class="sort" th:text="${s.assort}"></span>
@@ -140,6 +140,7 @@
 </footer>
 
 <script th:src="@{/js/index.js}"></script>
+<script th:src="@{/js/autocomplete.js}"></script>
 </body>
 
 </html>

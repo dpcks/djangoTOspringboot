@@ -1,4 +1,4 @@
-package com.project.ofcourse.controller;
+package com.project.ofcourse.controller.company;
 
 import com.project.ofcourse.dto.company.CompanyDTO;
 import com.project.ofcourse.dto.company.CompanyInfoDTO;

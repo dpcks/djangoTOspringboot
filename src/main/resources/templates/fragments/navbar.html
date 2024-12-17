@@ -11,8 +11,15 @@
       <img th:src="@{/img/springboot.png}" alt="스프링부트" style="width: 70px; height: 30px; vertical-align: middle; margin-left: 200px">
     </ul>
 
-    <div class="btn-wrap">
-      <a href="#" class="btn" onclick="alert('준비중입니다')">로그인</a>
+    <!-- 로그인 상태 확인 -->
+    <div th:if="${#authorization.expression('isAuthenticated()')}">
+      <span th:text="|${#authentication.name}님 환영합니다!|"></span>
+      <a th:href="@{/logout}" class="btn">로그아웃</a>
+    </div>
+
+    <!-- 비로그인 상태 -->
+    <div class="btn-wrap" th:unless="${#authorization.expression('isAuthenticated()')}">
+      <a th:href="@{/auth/login}" class="btn">로그인</a>
     </div>
   </nav>
 </div>

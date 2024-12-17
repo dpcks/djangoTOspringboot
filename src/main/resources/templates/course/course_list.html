@@ -28,6 +28,7 @@
 <div class="title-area">
     <h2 class="page-title">강의 찾기</h2><br>
     <p class="detail-title">공부하고 싶은 기술스택의 강의를 찾아보세요🔎</p>
+    <a class="detail-title" href="/course/filter" th:if="${not #lists.isEmpty(stackNames)}">전체 강의 보기</a>
 </div>
 
 <div class="search-area">

@@ -93,4 +93,59 @@
             #{id}
         </foreach>
     </select>
+
+    <!-- 검색한 강의 가져오기 -->
+    <select id="searchCourse" resultType="com.project.ofcourse.dto.course.CourseDTO">
+        SELECT DISTINCT
+            Course.id,
+            Course.url,
+            Course.img_url,
+            Course.title,
+            Course.teacher,
+            Course.headline,
+            Course.level,
+            Course.score,
+            Course.course_time,
+            Course.student_cnt,
+            Course.recommend,
+            Course.review_cnt,
+            Course.price,
+            Course.rank,
+            Course.sentiment
+        FROM
+            Course
+                LEFT OUTER JOIN Course_Stack
+                                ON Course.id = Course_Stack.course_id
+                LEFT OUTER JOIN Stack
+                                ON Course_Stack.stack_id = Stack.id
+                LEFT OUTER JOIN Stack_Dict
+                                ON Stack.id = Stack_Dict.stack_name_id
+        WHERE
+            Course.title LIKE CONCAT('%', #{search}, '%')
+           OR Course.teacher LIKE CONCAT('%', #{search}, '%')
+           OR Course.headline LIKE CONCAT('%', #{search}, '%')
+           OR Stack.name LIKE CONCAT('%', #{search}, '%')
+           OR Stack_Dict.search_word LIKE CONCAT('%', #{search}, '%')
+        ORDER BY
+            Course.rank ASC
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+    <select id="getTotalSearchCourse" resultType="int">
+        SELECT COUNT(DISTINCT Course.id) AS total_count
+        FROM
+            Course
+                LEFT OUTER JOIN Course_Stack
+                                ON Course.id = Course_Stack.course_id
+                LEFT OUTER JOIN Stack
+                                ON Course_Stack.stack_id = Stack.id
+                LEFT OUTER JOIN Stack_Dict
+                                ON Stack.id = Stack_Dict.stack_name_id
+        WHERE
+            Course.title LIKE CONCAT('%', #{search}, '%')
+           OR Course.teacher LIKE CONCAT('%', #{search}, '%')
+           OR Course.headline LIKE CONCAT('%', #{search}, '%')
+           OR Stack.name LIKE CONCAT('%', #{search}, '%')
+           OR Stack_Dict.search_word LIKE CONCAT('%', #{search}, '%');
+    </select>
 </mapper>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.thymeleaf.model.IModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,24 @@ public class CourseController {
     @ResponseBody
     public List<StackDTO> getStacksByAssort(@RequestParam String assort) {
         return courseService.getStacksByAssort(assort);
+    }
+
+    // 강의 검색
+    @GetMapping("/search")
+    public String searchCourse(@RequestParam String search, PageRequestDTO pageRequest, Model model) {
+
+        pageRequest.setSearch(search);
+
+        int totalCourse = courseService.getTotalSearchCourse(search);
+        List<CourseDTO> courseList = courseService.searchCourse(search, pageRequest.getPage(), pageRequest.getPageSize());
+
+        PageResponseDTO<CourseDTO> pageResponse = PaginationUtil.buildPageResponse(
+                courseList, totalCourse, pageRequest, 10);
+
+        model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("search", search);
+
+        return "course/course_search";
     }
 
 }

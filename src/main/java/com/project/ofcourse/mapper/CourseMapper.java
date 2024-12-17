@@ -33,6 +33,14 @@ public interface CourseMapper {
     // 스택별 강의 개수
     int getTotalCourseByStackIds(@Param("stackId") List<Long> stackId);
 
-    // 검색한 스택 이름 가져오기
+    // 필터링한 스택 이름 가져오기
     List<String> getStackNamebyIds(List<Long> stackIds);
+
+    // 강의 검색
+    List<CourseDTO> searchCourse(@Param("search") String search,
+                                 @Param("offset") int offset,
+                                 @Param("pageSize") int pageSize);
+
+    // 검색한 강의 개수
+    int getTotalSearchCourse(@Param("search") String search);
 }

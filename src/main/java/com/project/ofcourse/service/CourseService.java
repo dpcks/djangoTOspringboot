@@ -113,4 +113,46 @@ public class CourseService {
     public List<String> getStackNamebyIds(List<Long> stackIds) {
         return courseMapper.getStackNamebyIds(stackIds);
     }
+
+    // 강의 검색
+    public List<CourseDTO> searchCourse(String search, int pageNumber, int pageSize) {
+
+        int offset = (pageNumber - 1) * pageSize;
+
+        List<CourseDTO> courses = courseMapper.searchCourse(search, offset, pageSize);
+
+        if (courses.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        //강의 ID 목록 추출
+        List<Long> courseIds = courses.stream()
+                .map(CourseDTO::getId)
+                .collect(Collectors.toList());
+
+        //강의 ID별 스택 조회
+        List<StackDTO> stacks = courseMapper.selectStackByCourseId(courseIds);
+
+        //강의 ID별 스택 리스트 그룹핑
+        Map<Long, List<StackDTO>> stacksByCourseId = stacks.stream()
+                .collect(Collectors.groupingBy(StackDTO::getCourseId));
+
+        // 각 강의에 스택 리스트 설정
+        for (CourseDTO course : courses) {
+            course.setStackList(stacksByCourseId.getOrDefault(course.getId(), new ArrayList<>()));
+        }
+
+        // 감정값(sentiment)을 소수점 둘째 자리까지 반올림
+        courses.forEach(course -> {
+            if (course.getSentiment() != null) {
+                course.setSentiment(Math.round(course.getSentiment() * 100.0) / 100.0);
+            }
+        });
+        return courses;
+    }
+
+    // 검색한 강의 개수
+    public int getTotalSearchCourse(String search) {
+        return courseMapper.getTotalSearchCourse(search);
+    }
 }

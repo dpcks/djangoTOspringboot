@@ -28,6 +28,7 @@
 <div class="title-area">
     <h2 class="page-title">강의 찾기</h2><br>
     <p class="detail-title">공부하고 싶은 기술스택의 강의를 찾아보세요🔎</p>
+    <a class="detail-title" href="/course/filter">전체 강의 보기</a>
 </div>
 
 <div class="search-area">
@@ -39,59 +40,12 @@
     </form>
 </div>
 <div class="content">
-    <div class="filter-area">
-        <div class="btn-wrap">
-            <div class="btn-l-wrap">
-                <!-- Assort 버튼 -->
-                <button class="btn on" onclick="updateStacks('언어', this)">언어</button>
-                <button class="btn" onclick="updateStacks('프론트엔드', this)">프론트엔드</button>
-                <button class="btn" onclick="updateStacks('백엔드', this)">백엔드</button>
-                <button class="btn" onclick="updateStacks('데이터베이스', this)">데이터베이스</button>
-                <button class="btn" onclick="updateStacks('데브옵스', this)">데브옵스</button>
-                <button class="btn" onclick="updateStacks('데이터', this)">데이터</button>
-                <button class="btn" onclick="updateStacks('모바일', this)">모바일</button>
-                <button class="btn" onclick="updateStacks('테스팅툴', this)">테스팅툴</button>
-                <button class="btn" onclick="updateStacks('협업툴', this)">협업툴</button>
-            </div>
-            <div class="btn-r-wrap" th:if="${#lists.isEmpty(stackNames)}">
-                <p class="title">필터 </p>
-                <!-- 필터 버튼 -->
-                <a class="btn" th:href="@{/course/filter(sort='default')}"
-                   th:classappend="${selectedSort == null || selectedSort == 'default'} ? 'on' : ''">기본</a>
-                <a class="btn" th:href="@{/course/filter(sort='review')}"
-                   th:classappend="${selectedSort == 'review'} ? 'on' : ''">리뷰많은순</a>
-                <a class="btn" th:href="@{/course/filter(sort='recommend')}"
-                   th:classappend="${selectedSort == 'recommend'} ? 'on' : ''">추천많은순</a>
-                <a class="btn" th:href="@{/course/filter(sort='score')}"
-                   th:classappend="${selectedSort == 'score'} ? 'on' : ''">평점순</a>
-                <a class="btn" th:href="@{/course/filter(sort='free')}"
-                   th:classappend="${selectedSort == 'free'} ? 'on' : ''">무료</a>
-            </div>
-        </div>
-
-        <form th:action="@{/course/filter}" method="GET">
-            <!-- 스택 리스트 -->
-            <div class="skill-info-area">
-                <div class="container" id="stack-list">
-                    <!-- AJAX로 갱신될 영역 -->
-                </div>
-            </div>
-            <button type="submit" onclick="disbtn()" class="search-btn">검색</button>
-        </form>
-    </div>
-
-
     <main class="list-area">
-        <!-- 필터되지 않은 전체 강의 리스트 -->
-        <h3 class="search-result-area" th:if="${#lists.isEmpty(stackNames)}">
-            <span class="text-highlight" style="margin-right: .8rem;"># 전체 강의</span>
-            정보입니다.
-        </h3>
         <!-- 필터된 강의가 뜰때 -->
-        <h3 class="search-result-area" th:if="${not #lists.isEmpty(stackNames)}">
+        <h3 class="search-result-area">
             검색하신
-            <th:block th:each="name : ${stackNames}">
-                <span class="text-highlight" style="margin-right: .8rem;"># <span th:text="${name}"></span></span>
+            <th:block>
+                <span class="text-highlight" style="margin-right: .8rem;"># <span th:text="${search}"></span></span>
             </th:block>
             강의 정보입니다.
         </h3>
@@ -133,7 +87,7 @@
 <div class="pagination">
     <!-- 이전 버튼 -->
     <a th:if="${pageResponse.hasPreviousGroup}"
-       th:href="@{/course/filter(page=${pageResponse.previousGroupStart}, sort=${selectedSort}, stackId=${stackIds})}"
+       th:href="@{/course/search(search=${search},page=${pageResponse.previousGroupStart})}"
        class="btn prev">
         <i class="fa-solid fa-angle-left"></i>
         <i class="fa-solid fa-angle-left"></i>
@@ -146,7 +100,7 @@
     <!-- 페이지 번호 출력 -->
     <li th:each="page : ${pageResponse.pageRange}">
         <a class="btn"
-           th:href="@{/course/filter(page=${page}, sort=${selectedSort}, stackId=${stackIds})}"
+           th:href="@{/course/search(search=${search},page=${page})}"
            th:classappend="${page == pageResponse.currentPage} ? 'on' : ''"
            th:text="${page}">
         </a>
@@ -154,7 +108,7 @@
 
     <!-- 다음 버튼 -->
     <a th:if="${pageResponse.hasNextGroup}"
-       th:href="@{/course/filter(page=${pageResponse.nextGroupStart}, sort=${selectedSort}, stackId=${stackIds})}"
+       th:href="@{/course/search(search=${search},page=${pageResponse.nextGroupStart})}"
        class="btn next">
         <i class="fa-solid fa-angle-right"></i>
         <i class="fa-solid fa-angle-right"></i>

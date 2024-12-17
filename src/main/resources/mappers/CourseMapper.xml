@@ -81,6 +81,7 @@
         <foreach item="id" collection="stackId" open="(" separator="," close=")">
             #{id}
         </foreach>
+        ORDER BY `rank` DESC
     </select>
 
     <!-- 스택 이름 가져오기 -->

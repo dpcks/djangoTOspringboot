@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,71 +28,45 @@ public class CourseController {
 
     private final CourseService courseService;
 
-    //강의 리스트
-    @GetMapping
-    public String getCourseList(@RequestParam(defaultValue = "default") String sort,
-                                PageRequestDTO pageRequest,
-                                Model model) {
-        // 정렬 기준 설정
-        pageRequest.setSort(sort);
+    // 강의 리스트 (필터 기능 , 정렬 기능 포함)
+    @GetMapping("/filter")
+    public String getCourseList(@RequestParam(value = "sort", required = false, defaultValue = "default") String sort,
+                                @RequestParam(value = "stackId", required = false) List<Long> stackIds,
+                                PageRequestDTO pageRequest, Model model){
+        // 강의 개수 조회
+        int totalCourses = stackIds == null || stackIds.isEmpty()
+                ? courseService.getTotalCourse()
+                : courseService.getTotalCourseByStackIds(stackIds);
 
-        // 총 강의 수 가져오기
-        int totalCourse = sort.equals("free")
-                ? courseService.getTotalFreeCourse()
-                : courseService.getTotalCourse();
+        // 강의 목록 조회
+        List<CourseDTO> courses = stackIds == null || stackIds.isEmpty()
+                ? courseService.getAllCourse(pageRequest.getPage(), pageRequest.getPageSize(), sort)
+                : courseService.getCourseByStackIds(stackIds, pageRequest.getPage(), pageRequest.getPageSize());
 
-        // 강의 리스트 가져오기
-        List<CourseDTO> courseList = courseService.getAllCourse(
-                pageRequest.getPage(),
-                pageRequest.getPageSize(),
-                sort
-        );
+        // 스택 이름 조회
+        List<String> stackNames = stackIds == null || stackIds.isEmpty()
+                ? new ArrayList<>()
+                : courseService.getStackNamebyIds(stackIds);
 
-        // 페이지 응답 데이터 생성
+        // 페이지네이션 정보 생성
         PageResponseDTO<CourseDTO> pageResponse = PaginationUtil.buildPageResponse(
-                courseList,
-                totalCourse,
-                pageRequest,
-                10
+                courses, totalCourses, pageRequest, 10
         );
 
         // 모델에 데이터 추가
         model.addAttribute("pageResponse", pageResponse);
+        model.addAttribute("stackNames", stackNames); // 필터링된 스택 이름
         model.addAttribute("selectedSort", sort);
+        model.addAttribute("stackIds", stackIds); // 필터링된 스택 ID 유지
 
         return "course/course_list";
     }
-
 
     //스택 리스트 (ajax 요청 처리)
     @GetMapping("/stacks")
     @ResponseBody
     public List<StackDTO> getStacksByAssort(@RequestParam String assort) {
         return courseService.getStacksByAssort(assort);
-    }
-
-    // 스택별 강의 가져오기
-    @GetMapping("/filter")
-    public String getCourseByStackIds(@RequestParam List<Long> stackId, PageRequestDTO pageRequest, Model model) {
-        int totalCourse = courseService.getTotalCourseByStackIds(stackId);
-
-        //필터된 강의 리스트
-        List<CourseDTO> filterCourseList = courseService.getCourseByStackIds(stackId, pageRequest.getPage(), pageRequest.getPageSize());
-
-        //스택 이름 가져오기
-        List<String> stackNames = courseService.getStackNamebyIds(stackId);
-
-//        log.info("========================================================");
-//        log.info("stackID ===============================> " + stackId);
-
-        PageResponseDTO<CourseDTO> pageResponse = PaginationUtil.buildPageResponse(
-                filterCourseList, totalCourse, pageRequest, 10
-        );
-
-        model.addAttribute("pageResponse", pageResponse);
-        model.addAttribute("stackNames", stackNames);
-
-        return "course/course_list";
     }
 
 }

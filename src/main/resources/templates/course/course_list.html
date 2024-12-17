@@ -53,18 +53,18 @@
                 <button class="btn" onclick="updateStacks('테스팅툴', this)">테스팅툴</button>
                 <button class="btn" onclick="updateStacks('협업툴', this)">협업툴</button>
             </div>
-            <div class="btn-r-wrap">
+            <div class="btn-r-wrap" th:if="${#lists.isEmpty(stackNames)}">
                 <p class="title">필터 </p>
                 <!-- 필터 버튼 -->
-                <a class="btn" th:href="@{/course(sort='default')}"
+                <a class="btn" th:href="@{/course/filter(sort='default')}"
                    th:classappend="${selectedSort == null || selectedSort == 'default'} ? 'on' : ''">기본</a>
-                <a class="btn" th:href="@{/course(sort='review')}"
+                <a class="btn" th:href="@{/course/filter(sort='review')}"
                    th:classappend="${selectedSort == 'review'} ? 'on' : ''">리뷰많은순</a>
-                <a class="btn" th:href="@{/course(sort='recommend')}"
+                <a class="btn" th:href="@{/course/filter(sort='recommend')}"
                    th:classappend="${selectedSort == 'recommend'} ? 'on' : ''">추천많은순</a>
-                <a class="btn" th:href="@{/course(sort='score')}"
+                <a class="btn" th:href="@{/course/filter(sort='score')}"
                    th:classappend="${selectedSort == 'score'} ? 'on' : ''">평점순</a>
-                <a class="btn" th:href="@{/course(sort='free')}"
+                <a class="btn" th:href="@{/course/filter(sort='free')}"
                    th:classappend="${selectedSort == 'free'} ? 'on' : ''">무료</a>
             </div>
         </div>
@@ -107,7 +107,7 @@
                     <p class="level" th:text="'레벨 - ' + ${course.level}"></p>
                     <p class="teacher" th:text="${course.teacher}"></p>
                     <p class="rate" th:text="${course.score} + '(리뷰긍정도 : ' + ${course.sentiment} + ')'"></p>
-                    <p class="recommend" th:text="'👍 - ' + ${#numbers.formatInteger(course.recommend, 3,'COMMA')} + ' 개'"></p>
+                    <p class="recommend" th:text="'👍 ' + ${#numbers.formatInteger(course.recommend, 3,'COMMA')} + ' 개'"></p>
                     <p class="price" th:switch="${course.price}">
                         <!-- 가격이 null인 경우 -->
                         <span th:case="null">🔗</span>
@@ -127,7 +127,7 @@
 <div class="pagination">
     <!-- 이전 버튼 -->
     <a th:if="${pageResponse.hasPreviousGroup}"
-       th:href="@{/course(page=${pageResponse.previousGroupStart}, sort=${selectedSort})}"
+       th:href="@{/course/filter(page=${pageResponse.previousGroupStart}, sort=${selectedSort}, stackId=${stackIds})}"
        class="btn prev">
         <i class="fa-solid fa-angle-left"></i>
         <i class="fa-solid fa-angle-left"></i>
@@ -140,7 +140,7 @@
     <!-- 페이지 번호 출력 -->
     <li th:each="page : ${pageResponse.pageRange}">
         <a class="btn"
-           th:href="@{/course(page=${page}, sort=${selectedSort})}"
+           th:href="@{/course/filter(page=${page}, sort=${selectedSort}, stackId=${stackIds})}"
            th:classappend="${page == pageResponse.currentPage} ? 'on' : ''"
            th:text="${page}">
         </a>
@@ -148,7 +148,7 @@
 
     <!-- 다음 버튼 -->
     <a th:if="${pageResponse.hasNextGroup}"
-       th:href="@{/course(page=${pageResponse.nextGroupStart}, sort=${selectedSort})}"
+       th:href="@{/course/filter(page=${pageResponse.nextGroupStart}, sort=${selectedSort}, stackId=${stackIds})}"
        class="btn next">
         <i class="fa-solid fa-angle-right"></i>
         <i class="fa-solid fa-angle-right"></i>

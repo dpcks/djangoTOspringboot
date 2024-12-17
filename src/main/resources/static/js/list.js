@@ -30,7 +30,7 @@ function renderStacks(data) {
         stackDiv.innerHTML = `
                 <i class="skill-logo" style="background-image: url('${stack.logo}');"></i>
             <input type="checkbox" class="btn-check" id="btncheck${stack.id}" 
-                   autocomplete="off" name="s" value="${stack.name}">
+                   autocomplete="off" name="stackId" value="${stack.id}">
             <label class="btn btn-outline-primary" for="btncheck${stack.id}">${stack.name}</label>
         `;
         stackList.appendChild(stackDiv);

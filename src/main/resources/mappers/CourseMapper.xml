@@ -16,6 +16,13 @@
         FROM Course
     </select>
 
+    <!-- 무료인 강의 개수 -->
+    <select id="getTotalFreeCourse" resultType="int">
+        SELECT COUNT(*)
+        FROM Course
+        WHERE price = 0
+    </select>
+
     <!-- 강의에서 사용하는 스택 가져오기 -->
     <select id="selectStackByCourseId" resultType="com.project.ofcourse.dto.stack.StackDTO">
         SELECT s.id, s.name, cs.course_id
@@ -31,7 +38,58 @@
     <select id="getAllCourse" resultType="com.project.ofcourse.dto.course.CourseDTO">
         SELECT *
         FROM Course
+        <choose>
+            <when test="sort == 'review'">
+                ORDER BY review_cnt DESC
+            </when>
+            <when test="sort == 'recommend'">
+                ORDER BY recommend DESC
+            </when>
+            <when test="sort == 'score'">
+                ORDER BY score DESC
+            </when>
+            <when test="sort == 'free'">
+                WHERE price = 0
+            </when>
+            <otherwise>
+                ORDER BY id ASC
+            </otherwise>
+        </choose>
         LIMIT #{pageSize}
         OFFSET #{offset}
+    </select>
+
+    <!-- 스택별 강의 조희 -->
+    <select id="getCourseByStackIds" resultType="com.project.ofcourse.dto.course.CourseDTO">
+        SELECT *
+        FROM Course c
+                 JOIN Course_Stack cs ON c.id = cs.course_id
+        WHERE cs.stack_id IN
+        <foreach item="id" collection="stackId" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        LIMIT #{pageSize}
+        OFFSET #{offset}
+    </select>
+
+   <!-- 스택별 강의 개수 조회 -->
+    <select id="getTotalCourseByStackIds" resultType="int">
+        SELECT COUNT(*)
+        FROM Course c
+        JOIN Course_Stack cs ON c.id = cs.course_id
+        WHERE cs.stack_id IN
+        <foreach item="id" collection="stackId" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <!-- 스택 이름 가져오기 -->
+    <select id="getStackNamebyIds" resultType="String">
+        SELECT name
+        FROM Stack
+        WHERE id IN
+        <foreach collection="stackIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
 </mapper>

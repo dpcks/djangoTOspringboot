@@ -15,6 +15,7 @@ public class PageRequestDTO {
     private String category = "All"; // 회사 카테고리 (기본값 All)
     private String assort = "All"; // 스택 분류
     private String search = null; // 검색 키워드 (옵션)
+    private String sort = "default"; // 강의 정렬 기준(기본 default)
 
     public int getOffset() {
         return (page -1) * pageSize;

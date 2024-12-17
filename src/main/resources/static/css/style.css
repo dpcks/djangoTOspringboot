@@ -82,6 +82,7 @@ header h1 {
     color: var(--main-color);
     margin: 0;
     width: 100px;
+    margin-left: 100px;
 }
 header nav {
     display: flex;
@@ -712,6 +713,13 @@ footer p {
     font-weight: 600;
 }
 .content > .list-area .list-card .info-box .level {
+    margin-top: 0.4rem;
+    margin-bottom: 0;
+    font-size: 1.4rem;
+    color: var(--font-color);
+    font-weight: 500;
+}
+.content > .list-area .list-card .info-box .recommend {
     margin-top: 0.4rem;
     margin-bottom: 0;
     font-size: 1.4rem;

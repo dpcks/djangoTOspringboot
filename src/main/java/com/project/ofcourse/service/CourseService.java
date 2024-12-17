@@ -155,4 +155,9 @@ public class CourseService {
     public int getTotalSearchCourse(String search) {
         return courseMapper.getTotalSearchCourse(search);
     }
+
+    // 검색어 자동완성
+    public List<String> autoKeywordCourse(String keyword) {
+        return courseMapper.autoKeywordCourse(keyword);
+    }
 }

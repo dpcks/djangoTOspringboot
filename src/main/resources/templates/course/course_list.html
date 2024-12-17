@@ -36,6 +36,7 @@
             <input type="text" name="search" id="search-bar" placeholder="강의를 입력해주세요 !" th:value="${search}">
             <button type="submit" class="search-btn">검색</button>
         </div>
+        <div id="autocomplete-results" class="autocomplete-results"></div>
     </form>
 </div>
 <div class="content">
@@ -173,4 +174,5 @@
 </body>
 
 <script th:src="@{/js/index.js}"></script>
+<script th:src="@{/js/autocomplete.js}"></script>
 </html>

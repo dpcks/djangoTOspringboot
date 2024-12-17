@@ -43,4 +43,7 @@ public interface CourseMapper {
 
     // 검색한 강의 개수
     int getTotalSearchCourse(@Param("search") String search);
+
+    // 강의검색 자동완성 키워드
+    List<String> autoKeywordCourse(@Param("keyword") String keyword);
 }

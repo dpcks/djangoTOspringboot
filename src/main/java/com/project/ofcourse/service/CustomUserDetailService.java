@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailService implements UserDetailsService {
+    // 사용자 정보를 제공하는 서비스 username을 기반으로 데이터베이스나 기타 저장소에서 사용자를 조회하고, 해당 정보를 Spring Security가 이해할 수
+    // 있는 형태로 변환해 반환한다.
 
     private final UserRepository userRepository;
 

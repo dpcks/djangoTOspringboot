@@ -55,13 +55,24 @@ public class AuthController {
     public String editProfile(@AuthenticationPrincipal UserDetails userDetails,
                               @RequestParam String currentPassword,
                               @RequestParam String newPassword,
+                              @RequestParam String confirmNewPassword,
                               Model model) {
-        try{
+        // 새 비밀번호와 확인 비밀번호 불일치 검증
+        if (!newPassword.equals(confirmNewPassword)) {
+            model.addAttribute("errorMessage", "새 비밀번호가 일치하지 않습니다.");
+            return "auth/edit_profile";
+        }
+
+        try {
+            // 현재 비밀번호 검증 및 비밀번호 업데이트
             userService.updatePassword(userDetails.getUsername(), currentPassword, newPassword);
             model.addAttribute("successMessage", "비밀번호가 성공적으로 변경되었습니다.");
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
+            // 현재 비밀번호가 틀린 경우
             model.addAttribute("errorMessage", e.getMessage());
         }
+
         return "auth/edit_profile";
     }
+
 }

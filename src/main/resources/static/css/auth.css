@@ -1,0 +1,63 @@
+@charset "UTF-8";
+/* 폰트 import*/
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@100;200;300;400;500;600;700;800;900&family=IBM+Plex+Sans:wght@100;200;300;400;500;600;700&display=swap");
+:root {
+    --font-color: #333;
+    --font-color2: #666;
+    --font-color3: #999;
+    --bg-color: #fff;
+    --bg-color2: #fbfbfb;
+    --main-color: #ff7474;
+    --main-color2: #ffdede;
+    --eng-font: "Archivo", sans-serif;
+    --kor-font: "IBM Plex Sans", sans-serif;
+    --bd-color: #ddd;
+    --motion: ease-in-out 0.15s;
+    --icon-font: "Font Awesome 5 Free";
+}
+
+/* 부모 컨테이너 스타일 */
+.auth-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px auto;
+    padding: 10px;
+    text-align: center;
+    margin-right: -14rem;
+}
+/* 아이디 부분 (밑줄 추가) */
+.id-message {
+    font-size: 14px;
+    color: #333; /* 진한 회색 */
+    text-decoration: underline; /* 밑줄 스타일 */
+    font-weight: bold; /* 강조 */
+    cursor: pointer;
+}
+
+/* '님 환영합니다!' 메시지 스타일 */
+.welcome-message {
+    font-size: 14px;
+    color: #555; /* 약간 연한 회색 */
+    font-weight: normal;
+}
+
+/* 로그아웃 버튼 스타일 */
+.logout-btn {
+    background-color: var(--main-color);; /* 버튼 배경색 (연한 빨강) */
+    color: #fff; /* 흰색 텍스트 */
+    border: none;
+    border-radius: 20px; /* 둥근 버튼 */
+    padding: 10px 20px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* 버튼에 호버 효과 추가 */
+.logout-btn:hover {
+    background-color: #e57373; /* 마우스를 올렸을 때 더 진한 빨강 */
+}

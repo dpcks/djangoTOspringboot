@@ -21,12 +21,13 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    //SecurityFilterChani을 사용해 보안 설정
+    //SecurityFilterChain을 사용해 보안 설정
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/auth/**", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/auth/edit-profile").authenticated() // 인증 필요
                         .anyRequest().authenticated()) // 나머지 요청은 인증 필요
                 .formLogin(form -> form
                         .loginPage("/auth/login") //로그인 페이지

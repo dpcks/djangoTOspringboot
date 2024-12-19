@@ -12,9 +12,12 @@
     </ul>
 
     <!-- 로그인 상태 확인 -->
-    <div th:if="${#authorization.expression('isAuthenticated()')}">
-      <span th:text="|${#authentication.name}님 환영합니다!|"></span>
-      <a th:href="@{/logout}" class="btn">로그아웃</a>
+    <div th:if="${#authorization.expression('isAuthenticated')}" class="auth-section">
+      <!-- 아이디 부분 -->
+      <a class="id-message" th:text="${#authentication.name}" th:href="@{/auth/edit-profile}"></a>
+      <!-- '님 환영합니다!' 부분 -->
+      <span class="welcome-message">님 환영합니다!</span>
+      <a th:href="@{/logout}" class="logout-btn">로그아웃</a>
     </div>
 
     <!-- 비로그인 상태 -->

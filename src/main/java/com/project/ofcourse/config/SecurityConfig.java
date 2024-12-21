@@ -26,9 +26,22 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/auth/**", "/css/**", "/js/**", "/img/**").permitAll()
-                        .requestMatchers("/auth/edit-profile").authenticated() // 인증 필요
-                        .anyRequest().authenticated()) // 나머지 요청은 인증 필요
+                        .requestMatchers("/",
+                                "/auth/**",
+                                "/css/**",
+                                "/js/**",
+                                "/img/**",
+                                "/company/**",  // company 폴더 접근 허용
+                                "/course/**",   // course 폴더 접근 허용
+                                "/stack/**",    // stack 폴더 접근 허용
+                                "/error/**",    // error 폴더 접근 허용
+                                "/fragments/**",// fragments 접근 허용
+                                "/index.html"   // index.html 접근 허용
+
+                        ).permitAll()
+                        .anyRequest().permitAll())
+//                        .requestMatchers("/auth/edit-profile").authenticated() // 인증 필요
+//                        .anyRequest().authenticated()) // 나머지 요청은 인증 필요
                 .formLogin(form -> form
                         .loginPage("/auth/login") //로그인 페이지
                         .defaultSuccessUrl("/", true) // 로그인 성공 시 메인 페이지로 이동

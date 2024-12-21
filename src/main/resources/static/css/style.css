@@ -46,9 +46,9 @@ body a {
     color: var(--font-color2);
 }
 
-.container {
-    max-width: 1500px;
-}
+/*.container {*/
+/*    max-width: 1500px;*/
+/*}*/
 
 .filterDiv {
     text-align: center;
@@ -125,6 +125,9 @@ header nav ul li::after {
 }
 header nav ul li:first-child::after {
     display: none;
+}
+header nav .btn-wrap{
+    margin-right: 50px;
 }
 header nav .btn-wrap .btn {
     display: block;
